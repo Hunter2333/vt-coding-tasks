@@ -40,9 +40,12 @@ function insertData(file){
     var collection = dbo.collection("FileChanges");
     fs.readFile('./modelt-az-report-repository/'+file, function(err, data) {
       console.log('checkout '+ file);
-      var document = {Time: Date(), ChangedFile: file, Content: data.toString('utf8')};
+      var file_content = data.toString('utf8');
+      var document = {Time: Date(), ChangedFile: file, Content: file_content};
       collection.insertOne(document, function (err, result) {
         if(err) throw err;
+        else // Send Email to recipients
+          sendNotificationEmail(config.recipient, file, file_content);
         //console.log(result);
       });
       db.close();
@@ -51,20 +54,18 @@ function insertData(file){
 }
 
 //TODO
-function sendNotificationEmail(recipient, file){
-  fs.readFile('./modelt-az-report-repository/'+file, function(err, data) {
-    var emailContent = "Time: " + Date() + "\nChangedFile: " + file + "\nContent: " + data.toString('utf8');
-    for(var i = 0; i < recipient.length; i++) {
-      transport.sendMail({
-        from    : config.email.user,
-        to      : recipient[i].emailAddress,
-        subject : '【CHANGED FILE】 /modelt-az-report-repository/' + file,
-        text: emailContent
-      }, function(err, res) {
-        console.log(err, res);
-      });
-    }
-  });
+function sendNotificationEmail(recipient, file, file_content){
+  var emailContent = "Time: " + Date() + "\nChangedFile: " + file + "\nContent: " + file_content;
+  for(var i = 0; i < recipient.length; i++) {
+    transport.sendMail({
+      from    : config.email.user,
+      to      : recipient[i].emailAddress,
+      subject : '【CHANGED FILE】 /modelt-az-report-repository/' + file,
+      text: emailContent
+    }, function(err, res) {
+      console.log(err, res);
+    });
+  }
 }
 
 function checkDiff(diffSummary) {
@@ -96,7 +97,7 @@ function checkDiff(diffSummary) {
           'origin/master',
           '--',
           f
-        ]).then(() => sendNotificationEmail(config.recipient, f));
+        ]);
     // Save Diff Result into Database
     insertData(f);
   }          
@@ -109,7 +110,7 @@ c.exec('start chrome http://localhost:8080/index.html');
 
 // Start Git Diff Schedule Task
 //const rule = new schedule.RecurrenceRule();
-//rule.minute = [10, 30, 50];
+//rule.minute = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
 const rule = '30 * * * * *';
 schedule.scheduleJob(rule, function () {
   // run on xx:xx:30 every minute
