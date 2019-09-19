@@ -81,17 +81,30 @@ function insertData(file){
 
 //temp
 function sendNotificationEmail(recipient, fileDir){
-  var emailContent = "Time: " + Date() + "\nChangedFile: " + fileDir;
-  for(var i = 0; i < recipient.length; i++) {
-    transport.sendMail({
-      from    : config.email.user,
-      to      : recipient[i].emailAddress,
-      subject : '【CHANGED FILE】 /modelt-az-report-repository/' + fileDir,
-      text: emailContent
-    }, function(err, res) {
-      console.log(err, res);
-    });
-  }
+  fs.readFile('./modelt-az-report-repository/'+fileDir, function(err, data) {
+    console.log('checkout ' + fileDir);
+    var emailContent = "【TIME】\n" + Date() + "\n----------------------------------------------------------------------------------\n\n"
+        + "【CHANGED FILE】\n " + fileDir + "\n----------------------------------------------------------------------------------\n\n"
+        + "【FILE CONTENT】\n" + data.toString('utf8');
+    for(var i = 0; i < recipient.length; i++) {
+      transport.sendMail({
+        from    : config.email.user,
+        to      : recipient[i].emailAddress,
+        subject : '【CHANGED FILE】 /modelt-az-report-repository/' + fileDir,
+        text: emailContent
+      }, function(err, res) {
+        console.log(err, res);
+      });
+    }
+  });
+}
+
+function checkFile(fileDir)
+{
+  // Save Diff Result into Database
+  if(fileDir.search("select-27.csv") != -1)
+  //insertData(changedFileDir);
+    sendNotificationEmail(config.recipient, fileDir);
 }
 
 //changedFilesDiffInfo[i]:
@@ -193,11 +206,7 @@ function checkDiff(diffresult) {
           'origin/master',
           '--',
           changedFileDir
-        ]);
-    // Save Diff Result into Database
-    if(changedFileDir.search("select-27.csv") != -1)
-      //insertData(changedFileDir);
-      sendNotificationEmail(config.recipient, changedFileDir);
+        ]).then(() => checkFile(changedFileDir));
   }
 }
 
