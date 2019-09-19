@@ -9,6 +9,9 @@ module.exports = {
     recipient: [
     { emailAddress: '1249881412@qq.com'},
     { emailAddress: 'xiaoqing.sun@sap.com' },
-    /*{ emailAddress: 'tao.jiang02@sap.com' },*/
+    { emailAddress: 'tao.jiang02@sap.com' },
+    { emailAddress: 'carry.lin@sap.com' },
+    { emailAddress: 'q.shen@sap.com' },
+    { emailAddress: 'winston.zhou@sap.com' },
     ]
 }
