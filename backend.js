@@ -90,7 +90,7 @@ function sendNotificationEmail(recipient, fileDir){
       transport.sendMail({
         from    : config.email.user,
         to      : recipient[i].emailAddress,
-        subject : '【CHANGED FILE】 /modelt-az-report-repository/' + fileDir,
+        subject : '【LONG RUNNING DEPLOYMENT DETECTED IN CCV2】 /modelt-az-report-repository/' + fileDir,
         text: emailContent
       }, function(err, res) {
         console.log(err, res);
@@ -219,7 +219,7 @@ c.exec('start chrome http://localhost:8080/index.html');*/
 if (!fs.existsSync('./'+FOLDER)) {
   git().clone(remote)
       .exec(() => console.log('finished'))
-      .catch((err) => console.error('failed: ', err));
+      //.catch((err) => console.error('failed: ', err));
 }else{
   // Start Git Diff Schedule Task
   //const rule = new schedule.RecurrenceRule();
