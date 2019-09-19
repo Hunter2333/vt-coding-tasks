@@ -206,7 +206,7 @@ function checkDiff(diffresult) {
           'origin/master',
           '--',
           changedFileDir
-        ]).then(() => checkFile(changedFileDir));
+        ]).exec(() => checkFile(changedFileDir));
   }
 }
 
@@ -215,25 +215,25 @@ function checkDiff(diffresult) {
 app.use(express.static("frontend")).listen(8080);
 c.exec('start chrome http://localhost:8080/index.html');*/
 
-// Start Git Diff Schedule Task
-//const rule = new schedule.RecurrenceRule();
-//rule.minute = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
-const rule = '30 * * * * *';
-schedule.scheduleJob(rule, function () {
-  // run on xx:xx:30 every minute
-  // run on xx:10 & xx:30 & xx:50 every hour
-  console.log('Schedule Rule is Running!');
-  //git.listRemote([], console.log.bind(console));
-  if (!fs.existsSync('./'+FOLDER)) {
-    git().clone(remote)
-        .then(() => console.log('finished'))
-        .catch((err) => console.error('failed: ', err));
-  }else{
+
+if (!fs.existsSync('./'+FOLDER)) {
+  git().clone(remote)
+      .exec(() => console.log('finished'))
+      .catch((err) => console.error('failed: ', err));
+}else{
+  // Start Git Diff Schedule Task
+  //const rule = new schedule.RecurrenceRule();
+  //rule.minute = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+  const rule = '30 * * * * *';
+  schedule.scheduleJob(rule, function () {
+    // run on xx:xx:30 every minute
+    // run on xx:10 & xx:30 & xx:50 every hour
+    console.log('Schedule Rule is Running!');
+    //git.listRemote([], console.log.bind(console));
     console.log('Local Copy is already existing!');
     git('./modelt-az-report-repository').diff(["origin/master"], function(err,status){
       console.log(status);
       checkDiff(status);
     });
-  }
-})
-
+  })
+}
