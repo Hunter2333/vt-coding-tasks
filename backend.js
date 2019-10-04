@@ -330,6 +330,7 @@ function sendNotificationEmail(fileDir, changeTypeID, updated_file_content) {
                 text: emailContent
             }, function (err, res) {
                 console.log(err, res);
+                console.log("\n");
             });
         }
     });
@@ -363,7 +364,7 @@ function getFileChangeType(str) {
 }
 
 //For select-27.csv in ./hourly
-function checkDiff(diffresult) {
+function checkDiff(diffresult, callback) {
     var changedFilesDiffInfo = diffresult.split("diff --git a/");
     changedFilesDiffInfo.splice(0, 1);
     for (var i = 0; i < changedFilesDiffInfo.length; i++) {
@@ -409,6 +410,7 @@ function checkDiff(diffresult) {
                 ]);
         }
     }
+    callback();
 }
 
 // Start Server at Port 8080
@@ -419,18 +421,24 @@ c.exec('start chrome http://localhost:8080/index.html');*/
 
 if (!fs.existsSync('./' + FOLDER)) {
     git().clone(remote)
-        .exec(() => console.log('finished'))
+        .exec(() => console.log('finished'));
     //.catch((err) => console.error('failed: ', err));
 } else {
+    //TODO
     // Start Git Pull Schedule Task
     // Pull from https://github.tools.sap/COPS/modelt-az-report-repository every day at 7:30AM
     const pull_rule = '0 30 7 * * *';
     schedule.scheduleJob(pull_rule, function () {
         console.log('Pull Schedule Rule is Running!');
         console.log('Local Copy is already existing!');
-        git('./modelt-az-report-repository').pull('origin', 'master', function (err, result) {
-            if (err) throw err;
-            console.log(result + "\n");
+        git('./modelt-az-report-repository').diff(["origin/master"], function (err, status) {
+            console.log(status + "\n");
+            checkDiff(status, function () {
+                git('./modelt-az-report-repository').pull('origin', 'master', function (err, result) {
+                    if (err) throw err;
+                    console.log(result + "\n");
+                });
+            });
         });
     });
 
@@ -445,8 +453,8 @@ if (!fs.existsSync('./' + FOLDER)) {
         //git.listRemote([], console.log.bind(console));
         console.log('Local Copy is already existing!');
         git('./modelt-az-report-repository').diff(["origin/master"], function (err, status) {
-            console.log(status);
-            checkDiff(status);
+            console.log(status + "\n");
+            checkDiff(status, function(){});
         });
     });
 }
