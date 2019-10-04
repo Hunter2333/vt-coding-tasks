@@ -63,7 +63,7 @@ function recordInDB_file_created(file) {
     sendNotificationEmail(file, 0);
     readFileToArr('./modelt-az-report-repository/' + file, function (file_content) {
         //console.log(file_content);
-        file_content.forEach(function(file_content_i) {
+        file_content.forEach(function (file_content_i) {
             //console.log(file_content[i].length);
             //if(file_content_i != file_content[0] && file_content_i.length == file_content[0].length) {
             if (file_content_i != file_content[0] && file_content_i.length == file_content[0].length && file_content_i[0] != "-----------") {
@@ -145,7 +145,7 @@ function recordInDB_file_modified(file, str) {
         //console.log("\n\n*********************************\n" + updated_file_content + "***************************************\n\n");
         var lines = str.split("\n");
         for (var i = 0; i < lines.length; i++) {
-            (function(i) {
+            (function (i) {
                 if (lines[i].substring(0, 2) == "@@") {
                     // for line numbers in file ---- incompleted
                     /*var changes_chunk = lines[i].split(" ");
@@ -169,7 +169,7 @@ function recordInDB_file_modified(file, str) {
                     let spread = Math.max(parseInt(tempStr_sub.split(",")[1]), parseInt(tempStr_add.split(",")[1]));
                     console.log(start, spread);*/
                     for (var k = i + 1; k < lines.length && lines[k].substring(0, 2) != "@@"; k++) {
-                        (function(k) {
+                        (function (k) {
                             //console.log("\n" + lines[k] + "\n");
                             var line_content = lines[k].split(",");
                             if (line_content.length == 11) {
@@ -422,19 +422,31 @@ if (!fs.existsSync('./' + FOLDER)) {
         .exec(() => console.log('finished'))
     //.catch((err) => console.error('failed: ', err));
 } else {
+    // Start Git Pull Schedule Task
+    // Pull from https://github.tools.sap/COPS/modelt-az-report-repository every day at 7:30AM
+    const pull_rule = '0 30 7 * * *';
+    schedule.scheduleJob(pull_rule, function () {
+        console.log('Pull Schedule Rule is Running!');
+        console.log('Local Copy is already existing!');
+        git('./modelt-az-report-repository').pull('origin', 'master', function (err, result) {
+            if (err) throw err;
+            console.log(result + "\n");
+        });
+    });
+
     // Start Git Diff Schedule Task
-    //const rule = new schedule.RecurrenceRule();
-    //rule.minute = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
-    const rule = '30 * * * * *';
-    schedule.scheduleJob(rule, function () {
+    //const diff_rule = new schedule.RecurrenceRule();
+    //diff_rule.minute = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+    const diff_rule = '30 * * * * *';
+    schedule.scheduleJob(diff_rule, function () {
         // run on xx:xx:30 every minute
         // run on xx:10 & xx:30 & xx:50 every hour
-        console.log('Schedule Rule is Running!');
+        console.log('Diff Schedule Rule is Running!');
         //git.listRemote([], console.log.bind(console));
         console.log('Local Copy is already existing!');
         git('./modelt-az-report-repository').diff(["origin/master"], function (err, status) {
             console.log(status);
             checkDiff(status);
         });
-    })
+    });
 }
