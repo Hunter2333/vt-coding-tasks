@@ -414,11 +414,24 @@ function checkDiff(diffresult, callback) {
 }
 
 // Start Server at Port 8080
-/*const app = express();
-app.use(express.static("frontend")).listen(8080);
-c.exec('start chrome http://localhost:8080/index.html');*/
+//TODO
+// API for Frontend
+const app = express();
+const path = require("path");
+const posts = require("./server/routes/posts");
+app.use(express.static(path.join(__dirname, 'dist/vt-coding-tasks/')));
+app.use("/posts", posts);
+// Catch all other routes request and return it to the index
+app.get('*', (req, res)=>{
+  res.sendFile(path.join(__dirname, 'dist/vt-coding-tasks/index.html'));
+});
+app.listen(8080, (req, res)=>{
+    console.log('Running on port 8080');
+});
+c.exec('start chrome http://localhost:8080/index.html');
 
 
+// ----------------- MAIN ------------------
 if (!fs.existsSync('./' + FOLDER)) {
     git().clone(remote)
         .exec(() => console.log('finished'));
