@@ -418,9 +418,9 @@ function checkDiff(diffresult, callback) {
 // API for Frontend
 const app = express();
 const path = require("path");
-const posts = require("./server/routes/posts");
+const routes = require("./server/routes/routes");
 app.use(express.static(path.join(__dirname, 'dist/vt-coding-tasks/')));
-app.use("/posts", posts);
+app.use("/routes", routes);
 // Catch all other routes request and return it to the index
 app.get('*', (req, res)=>{
   res.sendFile(path.join(__dirname, 'dist/vt-coding-tasks/index.html'));
