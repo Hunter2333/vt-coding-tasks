@@ -1,18 +1,42 @@
-<table class="table table-striped mt-5">
+<meta http-equiv="refresh" content="60">
+<h1>Long Running Deployment in CCv2</h1>
+<table class="table table-hover table-dark mt-5">
   <thead>
   <tr>
-    <th scope="col">User Id</th>
-    <th scope="col">Id</th>
-    <th scope="col">Title</th>
-    <th scope="col">Body</th>
+    <th scope="col">ID</th>
+    <th scope="col">BD Time</th>
+    <th scope="col">Changed File</th>
+    <th scope="col">Change Type</th>
+    <th scope="col">Customer ID</th>
+    <th scope="col">Customer Code</th>
+    <th scope="col">Customer Name</th>
+    <th scope="col">Env ID</th>
+    <th scope="col">Env Code</th>
+    <th scope="col">Env Name</th>
+    <th scope="col">Deployment ID</th>
+    <th scope="col">Failed Deployment</th>
+    <th scope="col">Deployment Started</th>
+    <th scope="col">Time Queried</th>
+    <th scope="col">Already Running In Minutes</th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let post of posts">
-    <td>{{post.userId}}</td>
-    <td>{{post.id}}</td>
-    <td>{{post.title}}</td>
-    <td>{{post.body}}</td>
+    <td>{{post._id}}</td>
+    <td>{{post.DBTime}}</td>
+    <td>{{post.ChangedFile}}</td>
+    <td>{{post.ChangeType}}</td>
+    <td>{{post.CustomerID}}</td>
+    <td>{{post.CustomerCode}}</td>
+    <td>{{post.CustomerName}}</td>
+    <td>{{post.EnvID}}</td>
+    <td>{{post.EnvCode}}</td>
+    <td>{{post.EnvName}}</td>
+    <td>{{post.DeploymentID}}</td>
+    <td>{{post.FailedDeployment}}</td>
+    <td>{{post.DeploymentStarted}}</td>
+    <td>{{post.TimeQueried}}</td>
+    <td>{{post.AlreadyRunningInMinutes}}</td>
   </tr>
   </tbody>
 </table>

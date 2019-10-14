@@ -34,6 +34,22 @@ const transport = nodemailer.createTransport(smtpTransport({
     }
 }));
 
+// Start Server at Port 8080
+// API for Frontend
+const app = express();
+const path = require("path");
+const routes = require("./server/routes/routes");
+app.use(express.static(path.join(__dirname, 'dist/vt-coding-tasks/')));
+app.use("/routes", routes);
+// Catch all other routes request and return it to the index
+app.get('*', (req, res)=>{
+  res.sendFile(path.join(__dirname, 'dist/vt-coding-tasks/index.html'));
+});
+app.listen(8080, (req, res)=>{
+  console.log('Running on port 8080');
+});
+c.exec('start chrome http://localhost:8080/index.html');
+
 // file change type
 const ChangeType = ["New File Created", "Whole File Deleted", "File Updated"];
 const FileContent = ["", "ORIGINAL", "UPDATED"];
@@ -93,7 +109,7 @@ function recordInDB_file_created(file) {
                     EnvName: env_name,
                     DeploymentID: deployment_id,
                     FailedDeployment: failed_deployment,
-                    DeploymentSatarted: deployment_started,
+                    DeploymentStarted: deployment_started,
                     TimeQueried: time_queried,
                     AlreadyRunningInMinutes: already_running_in_minutes
                 };
@@ -250,7 +266,7 @@ function recordInDB_file_modified(file, str) {
                                                                 DBTime: Date(),
                                                                 ChangeType: "Update",
                                                                 FailedDeployment: failed_deployment,
-                                                                DeploymentSatarted: deployment_started,
+                                                                DeploymentStarted: deployment_started,
                                                                 TimeQueried: time_queried,
                                                                 AlreadyRunningInMinutes: already_running_in_minutes
                                                             }
@@ -274,7 +290,7 @@ function recordInDB_file_modified(file, str) {
                                                     EnvName: env_name,
                                                     DeploymentID: deployment_id,
                                                     FailedDeployment: failed_deployment,
-                                                    DeploymentSatarted: deployment_started,
+                                                    DeploymentStarted: deployment_started,
                                                     TimeQueried: time_queried,
                                                     AlreadyRunningInMinutes: already_running_in_minutes
                                                 };
@@ -412,23 +428,6 @@ function checkDiff(diffresult, callback) {
     }
     callback();
 }
-
-// Start Server at Port 8080
-//TODO
-// API for Frontend
-const app = express();
-const path = require("path");
-const routes = require("./server/routes/routes");
-app.use(express.static(path.join(__dirname, 'dist/vt-coding-tasks/')));
-app.use("/routes", routes);
-// Catch all other routes request and return it to the index
-app.get('*', (req, res)=>{
-  res.sendFile(path.join(__dirname, 'dist/vt-coding-tasks/index.html'));
-});
-app.listen(8080, (req, res)=>{
-    console.log('Running on port 8080');
-});
-c.exec('start chrome http://localhost:8080/index.html');
 
 
 // ----------------- MAIN ------------------
