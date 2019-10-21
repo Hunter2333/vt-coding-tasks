@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PostsComponent } from './posts/posts.component';
+import { PostsComponent, FormatTimePipe } from './posts/posts.component';
 import { SortableColumnComponent } from './sortable-table/sortable-column.component';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
@@ -36,6 +36,7 @@ const Routes = [
     PostsComponent,
     SortableColumnComponent,
     SortableTableDirective,
+    FormatTimePipe
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Pipe, PipeTransform} from '@angular/core';
 import { PostsService, DataSearchCriteria } from '../posts.service';
+import { timer } from 'rxjs';
+import {map, take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-posts',
@@ -9,10 +11,14 @@ import { PostsService, DataSearchCriteria } from '../posts.service';
 export class PostsComponent implements OnInit {
 
   page = 1;
-  numPerPage = 2;
+  numPerPage = 3;
   gotoPageNum = '';
   posts: any = [];
   csvData = '';
+
+  countDown;
+  counter = 5 * 60;
+  tick = 1000;
   constructor(private  PostService: PostsService) { }
 
   getData(criteria: DataSearchCriteria) {
@@ -97,10 +103,28 @@ export class PostsComponent implements OnInit {
     this.Download(this.csvData);
   }
 
+  getKeys(item) {
+    return Object.keys(item);
+  }
+
   ngOnInit() {
+    this.countDown = timer(0, this.tick).pipe(take(this.counter), map(() => --this.counter));
     this.PostService.getAllPosts({ sortColumn: '#', sortDirection: 'asc' }).subscribe(posts => {
       this.posts = posts;
       this.csvData = this.objectToCsv(posts);
     });
   }
+}
+
+@Pipe({
+  name: 'formatTime'
+})
+export class FormatTimePipe implements PipeTransform {
+  // for HH:MM:SS format
+  transform(value: number): string {
+    const hours: number = Math.floor(value / 3600);
+    const minutes: number = Math.floor((value % 3600) / 60);
+    return ('00' + hours).slice(-2) + ':' + ('00' + minutes).slice(-2) + ':' + ('00' + Math.floor(value - minutes * 60)).slice(-2);
+  }
+
 }

@@ -1,4 +1,4 @@
-<!--<meta http-equiv="refresh" content="60">-->
+<meta http-equiv="refresh" content="300">
 <style>
   h1 {
     font-family: Georgia;
@@ -23,52 +23,35 @@
 
 <div class="container">
   <div class="row">
+    <div class="alert alert-success" role="alert">
+      <span>Data automatically REFRESH every 5 min.<h3>{{countDown | async | formatTime}}</h3></span>
+    </div>
     <nav class="navbar">
       <input class="form-control" type="text" name="search" placeholder="Filter all columns" [(ngModel)]="filter">
     </nav>
-    <table sortable-table (sorted)="onSorted($event)" class="table table-hover table-dark">
-      <thead>
-      <tr>
-        <th sortable-column="#" sort-direction="asc"> #</th>
-        <th sortable-column="_id" sort-direction="asc"> Object ID</th>
-        <th sortable-column="DBTime" sort-direction="asc"> DB Time</th>
-        <th sortable-column="ChangedFile" sort-direction="asc"> Changed File</th>
-        <th sortable-column="ChangeType" sort-direction="asc"> Change Type</th>
-        <th sortable-column="CustomerID" sort-direction="asc"> Customer ID</th>
-        <th sortable-column="CustomerCode" sort-direction="asc"> Customer Code</th>
-        <th sortable-column="CustomerName" sort-direction="asc"> Customer Name</th>
-        <th sortable-column="EnvID" sort-direction="asc"> Env ID</th>
-        <th sortable-column="EnvCode" sort-direction="asc"> Env Code</th>
-        <th sortable-column="EnvName" sort-direction="asc"> Env Name</th>
-        <th sortable-column="DeploymentID" sort-direction="asc"> Deployment ID</th>
-        <th sortable-column="FailedDeployment" sort-direction="asc"> Failed Deployment</th>
-        <th sortable-column="DeploymentStarted" sort-direction="asc"> Deployment Started</th>
-        <th sortable-column="TimeQueried" sort-direction="asc"> Time Queried</th>
-        <th sortable-column="AlreadyRunningInMinutes" sort-direction="asc"> Already Running In Minutes</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr
-        *ngFor="let post of posts | filter: filter | paginate: { itemsPerPage: numPerPage, currentPage: page }; let i = index;">
-        <td>{{post['#']}}</td>
-        <td>{{post._id}}</td>
-        <td>{{post.DBTime}}</td>
-        <td>{{post.ChangedFile}}</td>
-        <td>{{post.ChangeType}}</td>
-        <td>{{post.CustomerID}}</td>
-        <td>{{post.CustomerCode}}</td>
-        <td>{{post.CustomerName}}</td>
-        <td>{{post.EnvID}}</td>
-        <td>{{post.EnvCode}}</td>
-        <td>{{post.EnvName}}</td>
-        <td>{{post.DeploymentID}}</td>
-        <td>{{post.FailedDeployment}}</td>
-        <td>{{post.DeploymentStarted}}</td>
-        <td>{{post.TimeQueried}}</td>
-        <td>{{post.AlreadyRunningInMinutes}}</td>
-      </tr>
-      </tbody>
-    </table>
+    <div  style="width: fit-content; overflow-x: scroll; margin-bottom: 1rem;">
+      <table sortable-table (sorted)="onSorted($event)" class="table table-hover table-dark">
+        <thead>
+        <tr>
+          <th sortable-column="#" sort-direction="asc"> #</th>
+          <th *ngFor="let key of getKeys(posts[0])">
+            <span *ngIf="key != '#'" sortable-column={{key}} sort-direction="asc"> {{key}}</span>
+          </th>
+          <!--Object ID//DB Time//Changed File//Change Type//Customer ID//Customer Code//Customer Name//Env ID//Env Code//Env Name//
+          Deployment ID//Failed Deployment//Deployment Started//Time Queried//Already Running In Minutes-->
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+          *ngFor="let post of posts | filter: filter | paginate: { itemsPerPage: numPerPage, currentPage: page }; let i = index;">
+          <td>{{post['#']}}</td>
+          <td *ngFor="let key of getKeys(post)">
+            <span *ngIf="key != '#'">{{post[key]}}</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 

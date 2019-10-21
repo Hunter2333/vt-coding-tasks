@@ -45,7 +45,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<!--<meta http-equiv=\"refresh\" content=\"60\">-->\r\n<style>\r\n  h1 {\r\n    font-family: Georgia;\r\n    font-weight: bold;\r\n    margin-top: 2rem;\r\n    margin-bottom: 0.6rem;\r\n    text-transform: uppercase;\r\n  }\r\n\r\n  button {\r\n    margin-bottom: 0.6rem;\r\n  }\r\n\r\n  th[sortable-column] {\r\n    text-align: left;\r\n    cursor: pointer;\r\n  }\r\n</style>\r\n<body>\r\n<h1>Long Running Deployment in CCv2</h1>\r\n<button type=\"button\" class=\"btn btn-primary\" (click)=\"exportCsv()\">Export ALL data to csv</button>\r\n\r\n<div class=\"container\">\r\n  <div class=\"row\">\r\n    <nav class=\"navbar\">\r\n      <input class=\"form-control\" type=\"text\" name=\"search\" placeholder=\"Filter all columns\" [(ngModel)]=\"filter\">\r\n    </nav>\r\n    <table sortable-table (sorted)=\"onSorted($event)\" class=\"table table-hover table-dark\">\r\n      <thead>\r\n      <tr>\r\n        <th sortable-column=\"#\" sort-direction=\"asc\"> #</th>\r\n        <th sortable-column=\"_id\" sort-direction=\"asc\"> Object ID</th>\r\n        <th sortable-column=\"DBTime\" sort-direction=\"asc\"> DB Time</th>\r\n        <th sortable-column=\"ChangedFile\" sort-direction=\"asc\"> Changed File</th>\r\n        <th sortable-column=\"ChangeType\" sort-direction=\"asc\"> Change Type</th>\r\n        <th sortable-column=\"CustomerID\" sort-direction=\"asc\"> Customer ID</th>\r\n        <th sortable-column=\"CustomerCode\" sort-direction=\"asc\"> Customer Code</th>\r\n        <th sortable-column=\"CustomerName\" sort-direction=\"asc\"> Customer Name</th>\r\n        <th sortable-column=\"EnvID\" sort-direction=\"asc\"> Env ID</th>\r\n        <th sortable-column=\"EnvCode\" sort-direction=\"asc\"> Env Code</th>\r\n        <th sortable-column=\"EnvName\" sort-direction=\"asc\"> Env Name</th>\r\n        <th sortable-column=\"DeploymentID\" sort-direction=\"asc\"> Deployment ID</th>\r\n        <th sortable-column=\"FailedDeployment\" sort-direction=\"asc\"> Failed Deployment</th>\r\n        <th sortable-column=\"DeploymentStarted\" sort-direction=\"asc\"> Deployment Started</th>\r\n        <th sortable-column=\"TimeQueried\" sort-direction=\"asc\"> Time Queried</th>\r\n        <th sortable-column=\"AlreadyRunningInMinutes\" sort-direction=\"asc\"> Already Running In Minutes</th>\r\n      </tr>\r\n      </thead>\r\n      <tbody>\r\n      <tr\r\n        *ngFor=\"let post of posts | filter: filter | paginate: { itemsPerPage: numPerPage, currentPage: page }; let i = index;\">\r\n        <td>{{post['#']}}</td>\r\n        <td>{{post._id}}</td>\r\n        <td>{{post.DBTime}}</td>\r\n        <td>{{post.ChangedFile}}</td>\r\n        <td>{{post.ChangeType}}</td>\r\n        <td>{{post.CustomerID}}</td>\r\n        <td>{{post.CustomerCode}}</td>\r\n        <td>{{post.CustomerName}}</td>\r\n        <td>{{post.EnvID}}</td>\r\n        <td>{{post.EnvCode}}</td>\r\n        <td>{{post.EnvName}}</td>\r\n        <td>{{post.DeploymentID}}</td>\r\n        <td>{{post.FailedDeployment}}</td>\r\n        <td>{{post.DeploymentStarted}}</td>\r\n        <td>{{post.TimeQueried}}</td>\r\n        <td>{{post.AlreadyRunningInMinutes}}</td>\r\n      </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n</div>\r\n\r\n<div>\r\n  <pagination-controls (pageChange)=\"page = $event\"></pagination-controls>\r\n  <span>\r\n    <input type=\"text\" id=\"gotoPageNum\" [(ngModel)]=\"gotoPageNum\">\r\n    <button type=\"button\" class=\"btn btn-primary\" [ngClass]=\"{'active':gotoPageNum!==''}\" [disabled]=\"gotoPageNum==''\"\r\n            (click)=gotoPage()>GOTO\r\n    </button>\r\n  </span>\r\n</div>\r\n</body>\r\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<meta http-equiv=\"refresh\" content=\"300\">\r\n<style>\r\n  h1 {\r\n    font-family: Georgia;\r\n    font-weight: bold;\r\n    margin-top: 2rem;\r\n    margin-bottom: 0.6rem;\r\n    text-transform: uppercase;\r\n  }\r\n\r\n  button {\r\n    margin-bottom: 0.6rem;\r\n  }\r\n\r\n  th[sortable-column] {\r\n    text-align: left;\r\n    cursor: pointer;\r\n  }\r\n</style>\r\n<body>\r\n<h1>Long Running Deployment in CCv2</h1>\r\n<button type=\"button\" class=\"btn btn-primary\" (click)=\"exportCsv()\">Export ALL data to csv</button>\r\n\r\n<div class=\"container\">\r\n  <div class=\"row\">\r\n    <div class=\"alert alert-success\" role=\"alert\">\r\n      <span>Data automatically REFRESH every 5 min.<h3>{{countDown | async | formatTime}}</h3></span>\r\n    </div>\r\n    <nav class=\"navbar\">\r\n      <input class=\"form-control\" type=\"text\" name=\"search\" placeholder=\"Filter all columns\" [(ngModel)]=\"filter\">\r\n    </nav>\r\n    <div  style=\"width: fit-content; overflow-x: scroll; margin-bottom: 1rem;\">\r\n      <table sortable-table (sorted)=\"onSorted($event)\" class=\"table table-hover table-dark\">\r\n        <thead>\r\n        <tr>\r\n          <th sortable-column=\"#\" sort-direction=\"asc\"> #</th>\r\n          <th *ngFor=\"let key of getKeys(posts[0])\">\r\n            <span *ngIf=\"key != '#'\" sortable-column={{key}} sort-direction=\"asc\"> {{key}}</span>\r\n          </th>\r\n          <!--Object ID//DB Time//Changed File//Change Type//Customer ID//Customer Code//Customer Name//Env ID//Env Code//Env Name//\r\n          Deployment ID//Failed Deployment//Deployment Started//Time Queried//Already Running In Minutes-->\r\n        </tr>\r\n        </thead>\r\n        <tbody>\r\n        <tr\r\n          *ngFor=\"let post of posts | filter: filter | paginate: { itemsPerPage: numPerPage, currentPage: page }; let i = index;\">\r\n          <td>{{post['#']}}</td>\r\n          <td *ngFor=\"let key of getKeys(post)\">\r\n            <span *ngIf=\"key != '#'\">{{post[key]}}</span>\r\n          </td>\r\n        </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<div>\r\n  <pagination-controls (pageChange)=\"page = $event\"></pagination-controls>\r\n  <span>\r\n    <input type=\"text\" id=\"gotoPageNum\" [(ngModel)]=\"gotoPageNum\">\r\n    <button type=\"button\" class=\"btn btn-primary\" [ngClass]=\"{'active':gotoPageNum!==''}\" [disabled]=\"gotoPageNum==''\"\r\n            (click)=gotoPage()>GOTO\r\n    </button>\r\n  </span>\r\n</div>\r\n</body>\r\n");
 
 /***/ }),
 
@@ -428,6 +428,7 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
             _posts_posts_component__WEBPACK_IMPORTED_MODULE_6__["PostsComponent"],
             _sortable_table_sortable_column_component__WEBPACK_IMPORTED_MODULE_7__["SortableColumnComponent"],
             _sortable_table_sortable_table_directive__WEBPACK_IMPORTED_MODULE_15__["SortableTableDirective"],
+            _posts_posts_component__WEBPACK_IMPORTED_MODULE_6__["FormatTimePipe"]
         ],
         imports: [
             _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
@@ -538,15 +539,20 @@ __webpack_require__.r(__webpack_exports__);
 /*!******************************************!*\
   !*** ./src/app/posts/posts.component.ts ***!
   \******************************************/
-/*! exports provided: PostsComponent */
+/*! exports provided: PostsComponent, FormatTimePipe */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PostsComponent", function() { return PostsComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormatTimePipe", function() { return FormatTimePipe; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _posts_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../posts.service */ "./src/app/posts.service.ts");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
+
+
 
 
 
@@ -554,10 +560,12 @@ let PostsComponent = class PostsComponent {
     constructor(PostService) {
         this.PostService = PostService;
         this.page = 1;
-        this.numPerPage = 2;
+        this.numPerPage = 3;
         this.gotoPageNum = '';
         this.posts = [];
         this.csvData = '';
+        this.counter = 5 * 60;
+        this.tick = 1000;
     }
     getData(criteria) {
         console.log('CRITERIA: ' + criteria.sortColumn + ', ' + criteria.sortDirection);
@@ -630,7 +638,11 @@ let PostsComponent = class PostsComponent {
     exportCsv() {
         this.Download(this.csvData);
     }
+    getKeys(item) {
+        return Object.keys(item);
+    }
     ngOnInit() {
+        this.countDown = Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["timer"])(0, this.tick).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["take"])(this.counter), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(() => --this.counter));
         this.PostService.getAllPosts({ sortColumn: '#', sortDirection: 'asc' }).subscribe(posts => {
             this.posts = posts;
             this.csvData = this.objectToCsv(posts);
@@ -647,6 +659,20 @@ PostsComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./posts.component.css */ "./src/app/posts/posts.component.css")).default]
     })
 ], PostsComponent);
+
+let FormatTimePipe = class FormatTimePipe {
+    // for HH:MM:SS format
+    transform(value) {
+        const hours = Math.floor(value / 3600);
+        const minutes = Math.floor((value % 3600) / 60);
+        return ('00' + hours).slice(-2) + ':' + ('00' + minutes).slice(-2) + ':' + ('00' + Math.floor(value - minutes * 60)).slice(-2);
+    }
+};
+FormatTimePipe = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Pipe"])({
+        name: 'formatTime'
+    })
+], FormatTimePipe);
 
 
 

@@ -85,33 +85,21 @@ function recordInDB_file_created(file) {
             if (file_content_i != file_content[0] && file_content_i.length == file_content[0].length && file_content_i[0] != "-----------") {
                 console.log("---------------RECORD FILE CONTENT IN DB---------------");
                 // DATA MODEL
-                var customer_id = file_content_i[0];
-                var customer_code = file_content_i[1];
-                var customer_name = file_content_i[2];
-                var env_id = file_content_i[3];
-                var env_code = file_content_i[4];
-                var env_name = file_content_i[5];
-                var deployment_id = file_content_i[6];
-                var failed_deployment = file_content_i[7];
-                var deployment_started = file_content_i[8];
-                var time_queried = file_content_i[9];
-                var already_running_in_minutes = file_content_i[10];
-
                 var document = {
                     DBTime: Date(),
                     ChangedFile: file,
                     ChangeType: "Insert",
-                    CustomerID: customer_id,
-                    CustomerCode: customer_code,
-                    CustomerName: customer_name,
-                    EnvID: env_id,
-                    EnvCode: env_code,
-                    EnvName: env_name,
-                    DeploymentID: deployment_id,
-                    FailedDeployment: failed_deployment,
-                    DeploymentStarted: deployment_started,
-                    TimeQueried: time_queried,
-                    AlreadyRunningInMinutes: already_running_in_minutes
+                    CustomerID: file_content_i[0],
+                    CustomerCode: file_content_i[1],
+                    CustomerName: file_content_i[2],
+                    EnvID: file_content_i[3],
+                    EnvCode: file_content_i[4],
+                    EnvName: file_content_i[5],
+                    DeploymentID: file_content_i[6],
+                    FailedDeployment: file_content_i[7],
+                    DeploymentStarted: file_content_i[8],
+                    TimeQueried: file_content_i[9],
+                    AlreadyRunningInMinutes: file_content_i[10]
                 };
                 MongoClient.connect(DB_CONN_STR, {useNewUrlParser: true, useUnifiedTopology: true}, function (err, db) {
                     if (err) throw err;
@@ -163,32 +151,11 @@ function recordInDB_file_modified(file, str) {
         for (var i = 0; i < lines.length; i++) {
             (function (i) {
                 if (lines[i].substring(0, 2) == "@@") {
-                    // for line numbers in file ---- incompleted
-                    /*var changes_chunk = lines[i].split(" ");
-                    //cut START "@@'
-                    changes_chunk.splice(0, 1);
-                    //cut things both include and after END "@@'
-                    for (var j = 0; j < changes_chunk.length; j++) {
-                        var count = 0;
-                        if (changes_chunk[j] == "@@") count++;
-                        if (count > 0) {
-                            changes_chunk.splice(j, changes_chunk.length - j);
-                            break;
-                        }
-                    }
-                    //console.log(changes_chunk);
-                    //changes_chunk: "-1,7", "+1,7"
-                    let tempStr_sub = changes_chunk[0].substring(1, changes_chunk[0].length);
-                    let tempStr_add = changes_chunk[1].substring(1, changes_chunk[1].length);
-                    //tempStr: "1,7"
-                    let start = Math.min(parseInt(tempStr_sub.split(",")[0]), parseInt(tempStr_add.split(",")[0]));
-                    let spread = Math.max(parseInt(tempStr_sub.split(",")[1]), parseInt(tempStr_add.split(",")[1]));
-                    console.log(start, spread);*/
                     for (var k = i + 1; k < lines.length && lines[k].substring(0, 2) != "@@"; k++) {
                         (function (k) {
                             //console.log("\n" + lines[k] + "\n");
                             var line_content = lines[k].split(",");
-                            if (line_content.length == 11) {
+                            if (line_content.length == 11 && line_content[3] != "------") {
                                 var customer_id = line_content[0].substring(1, line_content[0].length);
                                 var customer_code = line_content[1];
                                 var customer_name = line_content[2];
