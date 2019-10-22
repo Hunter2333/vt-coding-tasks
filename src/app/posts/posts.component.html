@@ -64,6 +64,10 @@
             <span *ngIf="key != '#'">{{post[key]}}</span>
           </td>
         </tr>
+        <!--MAX PAGE NUMBER-->
+        <div *ngIf='posts | filter: filter as filteredItems'>
+          <div id="filterResultCount" style="display: none; opacity: 0" >{{filteredItems.length}}</div>
+        </div>
         </tbody>
       </table>
     </div>

@@ -40,9 +40,9 @@ export class PostsComponent implements OnInit {
         alert('Please input a legal page number!');
     } else {
       const pageNum = Number(this.gotoPageNum);
-      // TODO
       // maxPage: consider the influence of table filter (ngx-pagination)
-      const maxPage = Math.ceil(this.posts.length / this.numPerPage);
+      const filterResultCount = parseInt(document.getElementById('filterResultCount').textContent, 10);
+      const maxPage = Math.ceil( filterResultCount / this.numPerPage);
       if (pageNum > maxPage) {
         alert('Maximum page number: ' + maxPage.toString());
       } else {
