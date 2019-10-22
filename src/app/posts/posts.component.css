@@ -1,0 +1,34 @@
+header {
+  position: fixed;
+  top: 0;
+  height: 60px;
+  width: 100%;
+  background: black;
+  z-index: 99;
+  box-shadow: 0 0 10px rgba(0,0,0,.2);
+}
+
+header img {
+  float: right;
+  margin-right: 2%;
+  margin-top: 15px;
+  transform: scale(.9);
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 60px;
+  text-align: center;
+  background: black;
+}
+
+footer p {
+  color: #eee;
+  font-family: "Times New Roman";
+  font-size: medium;
+  text-decoration: none;
+  margin-top: 10px;
+}

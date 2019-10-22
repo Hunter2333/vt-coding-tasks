@@ -1,15 +1,13 @@
 <meta http-equiv="refresh" content="300">
+<meta charset="utf-8">
+
 <style>
   h1 {
     font-family: Georgia;
     font-weight: bold;
-    margin-top: 2rem;
-    margin-bottom: 0.6rem;
     text-transform: uppercase;
-  }
-
-  button {
-    margin-bottom: 0.6rem;
+    margin-bottom: 1rem;
+    border-bottom: thin solid black;
   }
 
   th[sortable-column] {
@@ -17,19 +15,36 @@
     cursor: pointer;
   }
 </style>
-<body>
-<h1>Long Running Deployment in CCv2</h1>
-<button type="button" class="btn btn-primary" (click)="exportCsv()">Export ALL data to csv</button>
 
-<div class="container">
+<body>
+<!--HEADER-->
+<header>
+  <img src="https://s2.ax1x.com/2019/10/22/KGGvVS.png" alt="KGGvVS.png" border="0"/>
+</header>
+<!--CONTAINER START-->
+<div class="container-fluid">
   <div class="row">
+    <!--TITLE-->
+    <h1>Long Running Deployment in CCv2</h1>
+    <!--TIME REMAINS TILL NEXT AUTO REFRESH-->
     <div class="alert alert-success" role="alert">
-      <span>Data automatically REFRESH every 5 min.<h3>{{countDown | async | formatTime}}</h3></span>
+      <span>&#x26a0; Data automatically REFRESH every 5 min.<p></p><h3>{{countDown | async | formatTime}}</h3></span>
     </div>
-    <nav class="navbar">
-      <input class="form-control" type="text" name="search" placeholder="Filter all columns" [(ngModel)]="filter">
-    </nav>
-    <div  style="width: fit-content; overflow-x: scroll; margin-bottom: 1rem;">
+    <!--EXPORT CSV & TABLE DATA FILTER-->
+    <div style="margin-bottom: 0.6rem; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 2fr;">
+      <button type="button" class="btn btn-primary" (click)="exportCsv()" style="float: left">Export ALL data to csv</button>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div class="input-group form-group" style="margin-bottom: 0; float: right">
+        <span class="input-group-addon">Search</span>
+        <input class="form-control" type="text" name="search" placeholder="Filter all columns" [(ngModel)]="filter">
+      </div>
+    </div>
+    <!--TABLE OF MONGODB DATA-->
+    <div style="width: 100%; overflow-x: auto; margin-bottom: 1rem">
       <table sortable-table (sorted)="onSorted($event)" class="table table-hover table-dark">
         <thead>
         <tr>
@@ -43,7 +58,7 @@
         </thead>
         <tbody>
         <tr
-          *ngFor="let post of posts | filter: filter | paginate: { itemsPerPage: numPerPage, currentPage: page }; let i = index;">
+          *ngFor="let post of posts | filter: filter | paginate: { itemsPerPage: numPerPage, currentPage: page }">
           <td>{{post['#']}}</td>
           <td *ngFor="let key of getKeys(post)">
             <span *ngIf="key != '#'">{{post[key]}}</span>
@@ -52,16 +67,21 @@
         </tbody>
       </table>
     </div>
+    <!--TABLE DATA PAGINATION-->
+    <div style="display: grid; grid-template-columns: 4fr 1fr 1fr;">
+      <pagination-controls (pageChange)="page = $event" style="float: left"></pagination-controls>
+      <div></div>
+      <div class="input-group form-group" style="float: right">
+        <input type="text" class="form-control" id="gotoPageNum" [(ngModel)]="gotoPageNum"/>
+        <span class="input-group-btn"><button type="button" class="btn btn-primary" [ngClass]="{'active':gotoPageNum!==''}" [disabled]="gotoPageNum==''"
+                                              (click)=gotoPage()>GOTO</button></span>
+      </div>
+    </div>
   </div>
 </div>
+<!--FOOTER-->
+<footer>
+  <p>SAP Commerce Cloud Product Support &copy; 2019</p>
+</footer>
 
-<div>
-  <pagination-controls (pageChange)="page = $event"></pagination-controls>
-  <span>
-    <input type="text" id="gotoPageNum" [(ngModel)]="gotoPageNum">
-    <button type="button" class="btn btn-primary" [ngClass]="{'active':gotoPageNum!==''}" [disabled]="gotoPageNum==''"
-            (click)=gotoPage()>GOTO
-    </button>
-  </span>
-</div>
 </body>
