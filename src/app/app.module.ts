@@ -13,7 +13,6 @@ import { SortService } from './sortable-table/sort.service';
 
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
-import { Ng2OrderModule } from 'ng2-order-pipe';
 
 import { SortableTableDirective } from './sortable-table/sortable-table.directive';
 
@@ -46,7 +45,6 @@ const Routes = [
     RouterModule.forRoot(Routes),
     NgxPaginationModule,
     Ng2SearchPipeModule,
-    Ng2OrderModule
   ],
   providers: [PostsService, SortService],
   bootstrap: [AppComponent]

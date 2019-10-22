@@ -389,9 +389,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _sortable_table_sort_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./sortable-table/sort.service */ "./src/app/sortable-table/sort.service.ts");
 /* harmony import */ var ngx_pagination__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ngx-pagination */ "./node_modules/ngx-pagination/dist/ngx-pagination.js");
 /* harmony import */ var ng2_search_filter__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ng2-search-filter */ "./node_modules/ng2-search-filter/ng2-search-filter.js");
-/* harmony import */ var ng2_order_pipe__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ng2-order-pipe */ "./node_modules/ng2-order-pipe/dist/index.js");
-/* harmony import */ var ng2_order_pipe__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(ng2_order_pipe__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony import */ var _sortable_table_sortable_table_directive__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./sortable-table/sortable-table.directive */ "./src/app/sortable-table/sortable-table.directive.ts");
+/* harmony import */ var _sortable_table_sortable_table_directive__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./sortable-table/sortable-table.directive */ "./src/app/sortable-table/sortable-table.directive.ts");
 
 
 
@@ -406,7 +404,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
+/*import { Ng2OrderModule } from 'ng2-order-pipe';*/
 
 const Routes = [
     {
@@ -427,7 +425,7 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
             _app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"],
             _posts_posts_component__WEBPACK_IMPORTED_MODULE_6__["PostsComponent"],
             _sortable_table_sortable_column_component__WEBPACK_IMPORTED_MODULE_7__["SortableColumnComponent"],
-            _sortable_table_sortable_table_directive__WEBPACK_IMPORTED_MODULE_15__["SortableTableDirective"],
+            _sortable_table_sortable_table_directive__WEBPACK_IMPORTED_MODULE_14__["SortableTableDirective"],
             _posts_posts_component__WEBPACK_IMPORTED_MODULE_6__["FormatTimePipe"]
         ],
         imports: [
@@ -438,7 +436,6 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
             _angular_router__WEBPACK_IMPORTED_MODULE_8__["RouterModule"].forRoot(Routes),
             ngx_pagination__WEBPACK_IMPORTED_MODULE_12__["NgxPaginationModule"],
             ng2_search_filter__WEBPACK_IMPORTED_MODULE_13__["Ng2SearchPipeModule"],
-            ng2_order_pipe__WEBPACK_IMPORTED_MODULE_14__["Ng2OrderModule"]
         ],
         providers: [_posts_service__WEBPACK_IMPORTED_MODULE_10__["PostsService"], _sortable_table_sort_service__WEBPACK_IMPORTED_MODULE_11__["SortService"]],
         bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]]
