@@ -11,14 +11,17 @@ import {map, take} from 'rxjs/operators';
 export class PostsComponent implements OnInit {
 
   page = 1;
+  inputNumPerPage = '';
   numPerPage = 3;
   gotoPageNum = '';
   posts: any = [];
   csvData = '';
 
-  countDown;
+  /*inputCountDownMinutes = '';
+  // TODO
   counter = 5 * 60;
-  tick = 1000;
+  countDown;
+  tick = 1000;*/
   constructor(private  PostService: PostsService) { }
 
   getData(criteria: DataSearchCriteria) {
@@ -50,6 +53,30 @@ export class PostsComponent implements OnInit {
       }
     }
   }
+
+  setItemsPerPage() {
+    // positive int validation
+    const re = /^[1-9]*[1-9][0-9]*$/;
+    if (!re.test(this.inputNumPerPage)) {
+      alert('Please input a positive integer!');
+    } else {
+      this.numPerPage = parseInt(this.inputNumPerPage, 10);
+    }
+  }
+
+  /*setCountDownMinutes() {
+    // positive int validation
+    const re = /^[1-9]*[1-9][0-9]*$/;
+    if (!re.test(this.inputCountDownMinutes)) {
+      alert('Please input a positive integer!');
+    } else {
+      const countDownMinutes = parseInt(this.inputCountDownMinutes, 10);
+      this.counter = countDownMinutes * 60;
+      // TODO
+      // save counter setting and load its latest value when refresh
+      this.countDown = timer(0, this.tick).pipe(take(this.counter), map(() => --this.counter));
+    }
+  }*/
 
   objectToCsv(data: any) {
 
@@ -110,7 +137,7 @@ export class PostsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.countDown = timer(0, this.tick).pipe(take(this.counter), map(() => --this.counter));
+    // this.countDown = timer(0, this.tick).pipe(take(this.counter), map(() => --this.counter));
     this.PostService.getAllPosts({ sortColumn: '#', sortDirection: 'asc' }).subscribe(posts => {
       this.posts = posts;
       this.csvData = this.objectToCsv(posts);
@@ -118,7 +145,7 @@ export class PostsComponent implements OnInit {
   }
 }
 
-@Pipe({
+/*@Pipe({
   name: 'formatTime'
 })
 export class FormatTimePipe implements PipeTransform {
@@ -128,5 +155,4 @@ export class FormatTimePipe implements PipeTransform {
     const minutes: number = Math.floor((value % 3600) / 60);
     return ('00' + hours).slice(-2) + ':' + ('00' + minutes).slice(-2) + ':' + ('00' + Math.floor(value - minutes * 60)).slice(-2);
   }
-
-}
+}*/
