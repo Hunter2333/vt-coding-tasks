@@ -32,7 +32,7 @@ webpackEmptyAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("\n<router-outlet></router-outlet>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("\r\n<router-outlet></router-outlet>\r\n");
 
 /***/ }),
 
@@ -45,7 +45,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<!--<meta id=\"autoRefreshInterval\" http-equiv=\"refresh\" content=\"{{counter}}\">-->\r\n<meta charset=\"utf-8\">\r\n\r\n<style>\r\n  h1 {\r\n    font-family: Georgia;\r\n    font-weight: bold;\r\n    text-transform: uppercase;\r\n    margin-bottom: 1rem;\r\n    border-bottom: thin solid black;\r\n  }\r\n\r\n  th[sortable-column] {\r\n    text-align: left;\r\n    cursor: pointer;\r\n  }\r\n</style>\r\n\r\n<body>\r\n<!--HEADER-->\r\n<header>\r\n  <img src=\"https://s2.ax1x.com/2019/10/22/KGGvVS.png\" alt=\"KGGvVS.png\" border=\"0\"/>\r\n</header>\r\n<!--CONTAINER START-->\r\n<div class=\"container-fluid\">\r\n  <div class=\"row\">\r\n    <!--TITLE-->\r\n    <h1>Long Running Deployment in CCv2</h1>\r\n    <!--TIME REMAINS TILL NEXT AUTO REFRESH-->\r\n    <!--<div class=\"input-group form-group\">\r\n      <span class=\"input-group-addon\">Refresh every </span>\r\n      <input class=\"form-control\" type=\"text\" name=\"refreshMinutes\" [(ngModel)]=\"inputCountDownMinutes\">\r\n      <span class=\"input-group-addon\">min</span>\r\n      <span class=\"input-group-btn\"><button type=\"button\" class=\"btn btn-primary\" [ngClass]=\"{'active':inputCountDownMinutes!==''}\" [disabled]=\"inputCountDownMinutes==''\"\r\n                                            (click)=\"setCountDownMinutes()\">SET</button></span>\r\n    </div>\r\n    <div class=\"alert alert-success\" role=\"alert\">\r\n      <span>&#x26a0; By default, data automatically REFRESH every 5 min. Feel free to change this time setting.<p></p><h3>{{countDown | async | formatTime}}</h3></span>\r\n    </div>-->\r\n    <!--EXPORT CSV & ITEMS PER PAGE & TABLE DATA FILTER-->\r\n    <div style=\"margin-bottom: 0.6rem; display: grid; grid-template-columns: 2fr 3fr 6fr 5fr;\">\r\n      <button type=\"button\" class=\"btn btn-primary\" (click)=\"exportCsv()\" style=\"float: left\">Export ALL data to csv</button>\r\n      <div class=\"input-group form-group\" style=\"margin-bottom: 0; float: right\">\r\n        &nbsp;&nbsp;\r\n        <span class=\"input-group-addon\">Items per page</span>\r\n        <input class=\"form-control\" type=\"text\" name=\"itemsPerPage\" [(ngModel)]=\"inputNumPerPage\">\r\n        <span class=\"input-group-btn\"><button type=\"button\" class=\"btn btn-primary\" [ngClass]=\"{'active':inputNumPerPage!==''}\" [disabled]=\"inputNumPerPage==''\"\r\n                                              (click)=\"setItemsPerPage()\">SET</button></span>\r\n      </div>\r\n      <div></div>\r\n      <div class=\"input-group form-group\" style=\"margin-bottom: 0; float: right\">\r\n        <span class=\"input-group-addon\">Search</span>\r\n        <input class=\"form-control\" type=\"text\" name=\"search\" placeholder=\"Filter all columns\" [(ngModel)]=\"filter\">\r\n      </div>\r\n    </div>\r\n    <!--TABLE OF MONGODB DATA-->\r\n    <div style=\"width: 100%; overflow-x: auto; margin-bottom: 1rem\">\r\n      <table sortable-table (sorted)=\"onSorted($event)\" class=\"table table-hover table-dark\">\r\n        <thead>\r\n        <tr>\r\n          <th sortable-column=\"#\" sort-direction=\"asc\"> #</th>\r\n          <th *ngFor=\"let key of getKeys(posts[0])\">\r\n            <span *ngIf=\"key != '#'\" sortable-column={{key}} sort-direction=\"asc\"> {{key}}</span>\r\n          </th>\r\n          <!--Object ID//DB Time//Changed File//Change Type//Customer ID//Customer Code//Customer Name//Env ID//Env Code//Env Name//\r\n          Deployment ID//Failed Deployment//Deployment Started//Time Queried//Already Running In Minutes-->\r\n        </tr>\r\n        </thead>\r\n        <tbody>\r\n        <tr id=\"data_table_body\"\r\n          *ngFor=\"let post of posts | filter: filter | paginate: { itemsPerPage: numPerPage, currentPage: page }\">\r\n          <td>{{post['#']}}</td>\r\n          <td *ngFor=\"let key of getKeys(post)\">\r\n            <span *ngIf=\"key != '#'\">{{post[key]}}</span>\r\n          </td>\r\n        </tr>\r\n        <!--MAX PAGE NUMBER-->\r\n        <div *ngIf='posts | filter: filter as filteredItems'>\r\n          <div id=\"filterResultCount\" style=\"display: none; opacity: 0\" >{{filteredItems.length}}</div>\r\n        </div>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n    <!--TABLE DATA PAGINATION-->\r\n    <div style=\"display: grid; grid-template-columns: 4fr 1fr 1fr;\">\r\n      <pagination-controls (pageChange)=\"page = $event\" style=\"float: left\"></pagination-controls>\r\n      <div></div>\r\n      <div class=\"input-group form-group\" style=\"float: right\">\r\n        <input type=\"text\" class=\"form-control\" id=\"gotoPageNum\" [(ngModel)]=\"gotoPageNum\"/>\r\n        <span class=\"input-group-btn\"><button type=\"button\" class=\"btn btn-primary\" [ngClass]=\"{'active':gotoPageNum!==''}\" [disabled]=\"gotoPageNum==''\"\r\n                                              (click)=gotoPage()>GOTO</button></span>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n<!--FOOTER-->\r\n<footer>\r\n  <p>SAP Commerce Cloud Product Support &copy; 2019</p>\r\n</footer>\r\n\r\n</body>\r\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<meta charset=\"utf-8\">\r\n\r\n<style>\r\n  h1 {\r\n    font-family: Georgia;\r\n    font-weight: bold;\r\n    text-transform: uppercase;\r\n    margin-bottom: 1rem;\r\n    border-bottom: thin solid black;\r\n  }\r\n\r\n  th[sortable-column] {\r\n    text-align: left;\r\n    cursor: pointer;\r\n  }\r\n</style>\r\n\r\n<body>\r\n<!--HEADER-->\r\n<header>\r\n  <img src=\"https://s2.ax1x.com/2019/10/22/KGGvVS.png\" alt=\"KGGvVS.png\" border=\"0\"/>\r\n</header>\r\n<!--CONTAINER START-->\r\n<div class=\"container-fluid\">\r\n  <div class=\"row\">\r\n    <!--TITLE-->\r\n    <h1>Long Running Deployment in CCv2</h1>\r\n    <!--EXPORT CSV & ITEMS PER PAGE & TABLE DATA FILTER-->\r\n    <div style=\"margin-bottom: 0.6rem; display: grid; grid-template-columns: 2fr 3fr 6fr 5fr;\">\r\n      <button type=\"button\" class=\"btn btn-primary\" (click)=\"exportCsv()\" style=\"float: left\">Export ALL data to csv</button>\r\n      <div class=\"input-group form-group\" style=\"margin-bottom: 0; float: right\">\r\n        &nbsp;&nbsp;\r\n        <span class=\"input-group-addon\">Items per page</span>\r\n        <input class=\"form-control\" type=\"text\" name=\"itemsPerPage\" [(ngModel)]=\"inputNumPerPage\">\r\n        <span class=\"input-group-btn\"><button type=\"button\" class=\"btn btn-primary\" [ngClass]=\"{'active':inputNumPerPage!==''}\" [disabled]=\"inputNumPerPage==''\"\r\n                                              (click)=\"setItemsPerPage()\">SET</button></span>\r\n      </div>\r\n      <div></div>\r\n      <div class=\"input-group form-group\" style=\"margin-bottom: 0; float: right\">\r\n        <span class=\"input-group-addon\">Search</span>\r\n        <input class=\"form-control\" type=\"text\" name=\"search\" placeholder=\"Filter all columns\" [(ngModel)]=\"filter\">\r\n      </div>\r\n    </div>\r\n    <!--TABLE OF MONGODB DATA-->\r\n    <div style=\"width: 100%; overflow-x: auto; margin-bottom: 1rem\">\r\n      <table sortable-table (sorted)=\"onSorted($event)\" class=\"table table-hover table-dark\">\r\n        <thead>\r\n        <tr>\r\n          <th sortable-column=\"#\" sort-direction=\"asc\"> #</th>\r\n          <th *ngFor=\"let key of getKeys(posts[0])\">\r\n            <span *ngIf=\"key != '#'\" sortable-column={{key}} sort-direction=\"asc\"> {{key}}</span>\r\n          </th>\r\n          <!--Object ID//DB Time//Changed File//Change Type//Customer ID//Customer Code//Customer Name//Env ID//Env Code//Env Name//\r\n          Deployment ID//Failed Deployment//Deployment Started//Time Queried//Already Running In Minutes-->\r\n        </tr>\r\n        </thead>\r\n        <tbody>\r\n        <tr id=\"data_table_body\"\r\n          *ngFor=\"let post of posts | filter: filter | paginate: { itemsPerPage: numPerPage, currentPage: page }\">\r\n          <td>{{post['#']}}</td>\r\n          <td *ngFor=\"let key of getKeys(post)\">\r\n            <span *ngIf=\"key != '#'\">{{post[key]}}</span>\r\n          </td>\r\n        </tr>\r\n        <!--MAX PAGE NUMBER-->\r\n        <div *ngIf='posts | filter: filter as filteredItems'>\r\n          <div id=\"filterResultCount\" style=\"display: none; opacity: 0\" >{{filteredItems.length}}</div>\r\n        </div>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n    <!--TABLE DATA PAGINATION-->\r\n    <div style=\"display: grid; grid-template-columns: 4fr 1fr 1fr;\">\r\n      <pagination-controls (pageChange)=\"page = $event\" style=\"float: left\"></pagination-controls>\r\n      <div></div>\r\n      <div class=\"input-group form-group\" style=\"float: right\">\r\n        <input type=\"text\" class=\"form-control\" id=\"gotoPageNum\" [(ngModel)]=\"gotoPageNum\"/>\r\n        <span class=\"input-group-btn\"><button type=\"button\" class=\"btn btn-primary\" [ngClass]=\"{'active':gotoPageNum!==''}\" [disabled]=\"gotoPageNum==''\"\r\n                                              (click)=gotoPage()>GOTO</button></span>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n<!--FOOTER-->\r\n<footer>\r\n  <p>SAP Commerce Cloud Product Support &copy; 2019</p>\r\n</footer>\r\n\r\n</body>\r\n");
 
 /***/ }),
 
@@ -397,7 +397,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// import { FormatTimePipe } from './posts/posts.component';
 
 
 
@@ -468,6 +467,7 @@ let PostsService = class PostsService {
     constructor(http) {
         this.http = http;
         this.arr = [];
+        this.changes = [];
     }
     getAllPosts(criteria) {
         return this.http.get('/routes/posts').pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(posts => {
@@ -501,6 +501,9 @@ let PostsService = class PostsService {
                 }
             });
         }));
+    }
+    getDataChanges() {
+        return this.http.get('/routes/changes');
     }
 };
 PostsService.ctorParameters = () => [
@@ -548,11 +551,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let PostsComponent = class PostsComponent {
-    /*inputCountDownMinutes = '';
-    // TODO
-    counter = 5 * 60;
-    countDown;
-    tick = 1000;*/
     constructor(PostService) {
         this.PostService = PostService;
         this.page = 1;
@@ -561,8 +559,15 @@ let PostsComponent = class PostsComponent {
         this.gotoPageNum = '';
         this.posts = [];
         this.csvData = '';
+        this.changes = [];
     }
-    getData(criteria) {
+    getData() {
+        this.PostService.getAllPosts({ sortColumn: '#', sortDirection: 'asc' }).subscribe(posts => {
+            this.posts = posts;
+            this.csvData = this.objectToCsv(posts);
+        });
+    }
+    sortData(criteria) {
         console.log('CRITERIA: ' + criteria.sortColumn + ', ' + criteria.sortDirection);
         this.PostService.getAllPosts(criteria).subscribe(posts => {
             this.posts = posts;
@@ -570,7 +575,7 @@ let PostsComponent = class PostsComponent {
     }
     onSorted($event) {
         console.log('call onSorted($event)!');
-        this.getData($event);
+        this.sortData($event);
     }
     gotoPage() {
         // positive int validation
@@ -601,19 +606,6 @@ let PostsComponent = class PostsComponent {
             this.numPerPage = parseInt(this.inputNumPerPage, 10);
         }
     }
-    /*setCountDownMinutes() {
-      // positive int validation
-      const re = /^[1-9]*[1-9][0-9]*$/;
-      if (!re.test(this.inputCountDownMinutes)) {
-        alert('Please input a positive integer!');
-      } else {
-        const countDownMinutes = parseInt(this.inputCountDownMinutes, 10);
-        this.counter = countDownMinutes * 60;
-        // TODO
-        // save counter setting and load its latest value when refresh
-        this.countDown = timer(0, this.tick).pipe(take(this.counter), map(() => --this.counter));
-      }
-    }*/
     objectToCsv(data) {
         const csvRows = [];
         // get the headers
@@ -662,11 +654,18 @@ let PostsComponent = class PostsComponent {
         return Object.keys(item);
     }
     ngOnInit() {
-        // this.countDown = timer(0, this.tick).pipe(take(this.counter), map(() => --this.counter));
-        this.PostService.getAllPosts({ sortColumn: '#', sortDirection: 'asc' }).subscribe(posts => {
-            this.posts = posts;
-            this.csvData = this.objectToCsv(posts);
-        });
+        this.getData();
+        const interval = setInterval(() => {
+            console.log('CHECK FOR DATA CHANGES!');
+            this.PostService.getDataChanges().subscribe((res) => tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
+                this.changes = res;
+                const key = 'msg';
+                if (this.changes.length === 1 && this.changes[0][key] === '1') {
+                    yield clearInterval(interval);
+                    window.location.reload(true);
+                }
+            }));
+        }, 5000);
     }
 };
 PostsComponent.ctorParameters = () => [
@@ -680,17 +679,6 @@ PostsComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     })
 ], PostsComponent);
 
-/*@Pipe({
-  name: 'formatTime'
-})
-export class FormatTimePipe implements PipeTransform {
-  // for HH:MM:SS format
-  transform(value: number): string {
-    const hours: number = Math.floor(value / 3600);
-    const minutes: number = Math.floor((value % 3600) / 60);
-    return ('00' + hours).slice(-2) + ':' + ('00' + minutes).slice(-2) + ':' + ('00' + Math.floor(value - minutes * 60)).slice(-2);
-  }
-}*/
 
 
 /***/ }),

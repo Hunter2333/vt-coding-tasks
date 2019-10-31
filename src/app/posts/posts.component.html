@@ -1,4 +1,3 @@
-<!--<meta id="autoRefreshInterval" http-equiv="refresh" content="{{counter}}">-->
 <meta charset="utf-8">
 
 <style>
@@ -26,17 +25,6 @@
   <div class="row">
     <!--TITLE-->
     <h1>Long Running Deployment in CCv2</h1>
-    <!--TIME REMAINS TILL NEXT AUTO REFRESH-->
-    <!--<div class="input-group form-group">
-      <span class="input-group-addon">Refresh every </span>
-      <input class="form-control" type="text" name="refreshMinutes" [(ngModel)]="inputCountDownMinutes">
-      <span class="input-group-addon">min</span>
-      <span class="input-group-btn"><button type="button" class="btn btn-primary" [ngClass]="{'active':inputCountDownMinutes!==''}" [disabled]="inputCountDownMinutes==''"
-                                            (click)="setCountDownMinutes()">SET</button></span>
-    </div>
-    <div class="alert alert-success" role="alert">
-      <span>&#x26a0; By default, data automatically REFRESH every 5 min. Feel free to change this time setting.<p></p><h3>{{countDown | async | formatTime}}</h3></span>
-    </div>-->
     <!--EXPORT CSV & ITEMS PER PAGE & TABLE DATA FILTER-->
     <div style="margin-bottom: 0.6rem; display: grid; grid-template-columns: 2fr 3fr 6fr 5fr;">
       <button type="button" class="btn btn-primary" (click)="exportCsv()" style="float: left">Export ALL data to csv</button>

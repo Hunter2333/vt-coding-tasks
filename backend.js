@@ -43,12 +43,13 @@ app.use(express.static(path.join(__dirname, 'dist/vt-coding-tasks/')));
 app.use("/routes", routes);
 // Catch all other routes request and return it to the index
 app.get('*', (req, res)=>{
-  res.sendFile(path.join(__dirname, 'dist/vt-coding-tasks/index.html'));
+  res.redirect('http://localhost:8080');
 });
 app.listen(8080, (req, res)=>{
   console.log('Running on port 8080');
 });
-c.exec('start chrome http://localhost:8080/index.html');
+c.exec('start chrome http://localhost:8080');
+
 
 // file change type
 const ChangeType = ["New File Created", "Whole File Deleted", "File Updated"];

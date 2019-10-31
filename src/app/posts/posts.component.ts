@@ -1,7 +1,6 @@
-import {Component, OnInit, Pipe, PipeTransform} from '@angular/core';
-import { PostsService, DataSearchCriteria } from '../posts.service';
-import { timer } from 'rxjs';
-import {map, take} from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {PostsService, DataSearchCriteria} from '../posts.service';
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-posts',
@@ -16,15 +15,19 @@ export class PostsComponent implements OnInit {
   gotoPageNum = '';
   posts: any = [];
   csvData = '';
+  changes: any = [];
 
-  /*inputCountDownMinutes = '';
-  // TODO
-  counter = 5 * 60;
-  countDown;
-  tick = 1000;*/
-  constructor(private  PostService: PostsService) { }
+  constructor(private  PostService: PostsService) {
+  }
 
-  getData(criteria: DataSearchCriteria) {
+  getData() {
+    this.PostService.getAllPosts({sortColumn: '#', sortDirection: 'asc'}).subscribe(posts => {
+      this.posts = posts;
+      this.csvData = this.objectToCsv(posts);
+    });
+  }
+
+  sortData(criteria: DataSearchCriteria) {
     console.log('CRITERIA: ' + criteria.sortColumn + ', ' + criteria.sortDirection);
     this.PostService.getAllPosts(criteria).subscribe(posts => {
       this.posts = posts;
@@ -33,19 +36,19 @@ export class PostsComponent implements OnInit {
 
   onSorted($event) {
     console.log('call onSorted($event)!');
-    this.getData($event);
+    this.sortData($event);
   }
 
   gotoPage() {
     // positive int validation
     const re = /^[1-9]*[1-9][0-9]*$/;
     if (!re.test(this.gotoPageNum)) {
-        alert('Please input a legal page number!');
+      alert('Please input a legal page number!');
     } else {
       const pageNum = Number(this.gotoPageNum);
       // maxPage: consider the influence of table filter (ngx-pagination)
       const filterResultCount = parseInt(document.getElementById('filterResultCount').textContent, 10);
-      const maxPage = Math.ceil( filterResultCount / this.numPerPage);
+      const maxPage = Math.ceil(filterResultCount / this.numPerPage);
       if (pageNum > maxPage) {
         alert('Maximum page number: ' + maxPage.toString());
       } else {
@@ -64,20 +67,6 @@ export class PostsComponent implements OnInit {
     }
   }
 
-  /*setCountDownMinutes() {
-    // positive int validation
-    const re = /^[1-9]*[1-9][0-9]*$/;
-    if (!re.test(this.inputCountDownMinutes)) {
-      alert('Please input a positive integer!');
-    } else {
-      const countDownMinutes = parseInt(this.inputCountDownMinutes, 10);
-      this.counter = countDownMinutes * 60;
-      // TODO
-      // save counter setting and load its latest value when refresh
-      this.countDown = timer(0, this.tick).pipe(take(this.counter), map(() => --this.counter));
-    }
-  }*/
-
   objectToCsv(data: any) {
 
     const csvRows = [];
@@ -88,11 +77,11 @@ export class PostsComponent implements OnInit {
 
     // loop over the rows
     for (const row of data) {
-        const values = headers.map( header => {
-          const escaped = ('' + row[header]).replace(/"/g, '\\"');
-          return `"${escaped}"`;
-        });
-        csvRows.push(values.join(','));
+      const values = headers.map(header => {
+        const escaped = ('' + row[header]).replace(/"/g, '\\"');
+        return `"${escaped}"`;
+      });
+      csvRows.push(values.join(','));
     }
     // console.log(csvRows);
     return csvRows.join('\n');
@@ -116,7 +105,7 @@ export class PostsComponent implements OnInit {
   }
 
   Download(data: any) {
-    const blob = new Blob([data], { type: 'text/csv' });
+    const blob = new Blob([data], {type: 'text/csv'});
     const url = window.URL.createObjectURL(blob);
     // window.open(url);
     const a = document.createElement('a');
@@ -137,22 +126,17 @@ export class PostsComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.countDown = timer(0, this.tick).pipe(take(this.counter), map(() => --this.counter));
-    this.PostService.getAllPosts({ sortColumn: '#', sortDirection: 'asc' }).subscribe(posts => {
-      this.posts = posts;
-      this.csvData = this.objectToCsv(posts);
-    });
+    this.getData();
+    const interval = setInterval(() => {
+      console.log('CHECK FOR DATA CHANGES!');
+      this.PostService.getDataChanges().subscribe(async res => {
+        this.changes = res;
+        const key = 'msg';
+        if (this.changes.length === 1 && this.changes[0][key] === '1') {
+          await clearInterval(interval);
+          window.location.reload(true);
+        }
+      });
+    }, 5000);
   }
 }
-
-/*@Pipe({
-  name: 'formatTime'
-})
-export class FormatTimePipe implements PipeTransform {
-  // for HH:MM:SS format
-  transform(value: number): string {
-    const hours: number = Math.floor(value / 3600);
-    const minutes: number = Math.floor((value % 3600) / 60);
-    return ('00' + hours).slice(-2) + ':' + ('00' + minutes).slice(-2) + ':' + ('00' + Math.floor(value - minutes * 60)).slice(-2);
-  }
-}*/
