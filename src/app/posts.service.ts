@@ -10,7 +10,7 @@ import {Observable} from 'rxjs';
 export class PostsService {
 
   arr: any = [];
-  changes: any = [];
+
   constructor(private http: HttpClient) {
   }
 
