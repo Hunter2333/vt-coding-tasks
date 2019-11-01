@@ -47,8 +47,9 @@
         <thead>
         <tr>
           <th sortable-column="#" sort-direction="asc"> #</th>
+          <th sortable-column="Link" sort-direction="asc"> Link</th>
           <th *ngFor="let key of getKeys(posts[0])">
-            <span *ngIf="key != '#'" sortable-column={{key}} sort-direction="asc"> {{key}}</span>
+            <span *ngIf="key != '#' && key != 'Link'" sortable-column={{key}} sort-direction="asc"> {{key}}</span>
           </th>
           <!--Object ID//DB Time//Changed File//Change Type//Customer ID//Customer Code//Customer Name//Env ID//Env Code//Env Name//
           Deployment ID//Failed Deployment//Deployment Started//Time Queried//Already Running In Minutes-->
@@ -58,8 +59,9 @@
         <tr id="data_table_body"
           *ngFor="let post of posts | filter: filter | paginate: { itemsPerPage: numPerPage, currentPage: page }">
           <td>{{post['#']}}</td>
+          <td><a href="{{post['Link']}}" target="_blank" style="color: gold">{{post['Link']}}</a></td>
           <td *ngFor="let key of getKeys(post)">
-            <span *ngIf="key != '#'">{{post[key]}}</span>
+            <span *ngIf="key != '#' && key != 'Link'">{{post[key]}}</span>
           </td>
         </tr>
         <!--MAX PAGE NUMBER-->

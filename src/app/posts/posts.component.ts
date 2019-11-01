@@ -127,7 +127,7 @@ export class PostsComponent implements OnInit {
 
   ngOnInit() {
     this.getData();
-    const interval = setInterval(() => {
+    /*const interval = setInterval(() => {
       console.log('CHECK FOR DATA CHANGES!');
       this.PostService.getDataChanges().subscribe(async res => {
         this.changes = res;
@@ -137,6 +137,6 @@ export class PostsComponent implements OnInit {
           window.location.reload(true);
         }
       });
-    }, 5000);
+    }, 5000);*/
   }
 }

@@ -73,6 +73,14 @@ function readFileToArr(fReadName, callback) {
     });
 }
 
+function getModelTLink(file, deployment_id) {
+  // ae.prodweu.model-t.cc.commerce.ondemand.com/#!/deployment/34613
+  let link = "https://ae.prod";
+  const region = file.split('/')[2];
+  link = link + region + ".model-t.cc.commerce.ondemand.com/#!/deployment/" + deployment_id;
+  return link;
+}
+
 // ONLY for recording select-27.csv updates in DB
 // Whole File created
 function recordInDB_file_created(file) {
@@ -82,10 +90,11 @@ function recordInDB_file_created(file) {
         //console.log(file_content);
         file_content.forEach(function (file_content_i) {
             //console.log(file_content[i].length);
-            //if(file_content_i != file_content[0] && file_content_i.length == file_content[0].length) {
-            if (file_content_i != file_content[0] && file_content_i.length == file_content[0].length && file_content_i[0] != "-----------") {
+            if(file_content_i != file_content[0] && file_content_i.length == file_content[0].length) {
+            //if (file_content_i != file_content[0] && file_content_i.length == file_content[0].length && file_content_i[0] != "-----------") {
                 console.log("---------------RECORD FILE CONTENT IN DB---------------");
                 // DATA MODEL
+                const link = getModelTLink(file, file_content_i[6]);
                 var document = {
                     DBTime: Date(),
                     ChangedFile: file,
@@ -100,7 +109,8 @@ function recordInDB_file_created(file) {
                     FailedDeployment: file_content_i[7],
                     DeploymentStarted: file_content_i[8],
                     TimeQueried: file_content_i[9],
-                    AlreadyRunningInMinutes: file_content_i[10]
+                    AlreadyRunningInMinutes: file_content_i[10],
+                    Link: link,
                 };
                 MongoClient.connect(DB_CONN_STR, {useNewUrlParser: true, useUnifiedTopology: true}, function (err, db) {
                     if (err) throw err;
@@ -179,6 +189,8 @@ function recordInDB_file_modified(file, str) {
                                 // SUB
                                 // -: update DB
                                 if (lines[k][0] == "+") {
+                                    updated_file_content = updated_file_content + "-" + lines[k].substring(1, lines[k].length) + "\n";
+
                                     MongoClient.connect(DB_CONN_STR, {
                                         useNewUrlParser: true,
                                         useUnifiedTopology: true
@@ -204,7 +216,8 @@ function recordInDB_file_modified(file, str) {
                                 // +: insert / update DB
                                 else if (lines[k][0] == "-") {
                                     // notification email content by line
-                                    updated_file_content = updated_file_content + lines[k].substring(1, lines[k].length) + "\n";
+                                    //updated_file_content = updated_file_content + lines[k].substring(1, lines[k].length) + "\n";
+                                    updated_file_content = updated_file_content + "+" + lines[k].substring(1, lines[k].length) + "\n";
 
                                     MongoClient.connect(DB_CONN_STR, {
                                         useNewUrlParser: true,
@@ -246,6 +259,7 @@ function recordInDB_file_modified(file, str) {
                                                 });
                                             } else {
                                                 // INSERT
+                                                const link = getModelTLink(file, deployment_id);
                                                 var document = {
                                                     DBTime: Date(),
                                                     ChangedFile: file,
@@ -260,7 +274,8 @@ function recordInDB_file_modified(file, str) {
                                                     FailedDeployment: failed_deployment,
                                                     DeploymentStarted: deployment_started,
                                                     TimeQueried: time_queried,
-                                                    AlreadyRunningInMinutes: already_running_in_minutes
+                                                    AlreadyRunningInMinutes: already_running_in_minutes,
+                                                    Link: link,
                                                 };
                                                 MongoClient.connect(DB_CONN_STR, {
                                                     useNewUrlParser: true,
@@ -425,6 +440,9 @@ if (!fs.existsSync('./' + FOLDER)) {
     // Start Git Diff Schedule Task
     //const diff_rule = new schedule.RecurrenceRule();
     //diff_rule.minute = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+    //diff_rule.minute = [0, 10, 20, 30, 40, 50];
+    //diff_rule.minute = [0, 20, 40];
+    //diff_rule.minute = [0, 30];
     const diff_rule = '30 * * * * *';
     schedule.scheduleJob(diff_rule, function () {
         // run on xx:xx:30 every minute
