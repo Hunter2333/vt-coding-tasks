@@ -43,10 +43,6 @@ export class PostsService {
       });
     }));
   }
-
-  getDataChanges() {
-    return this.http.get('/routes/changes');
-  }
 }
 
 export class DataSearchCriteria {

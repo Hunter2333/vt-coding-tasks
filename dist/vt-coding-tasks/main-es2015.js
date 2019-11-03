@@ -501,9 +501,6 @@ let PostsService = class PostsService {
             });
         }));
     }
-    getDataChanges() {
-        return this.http.get('/routes/changes');
-    }
 };
 PostsService.ctorParameters = () => [
     { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] }
@@ -546,6 +543,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _posts_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../posts.service */ "./src/app/posts.service.ts");
+/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
+/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(socket_io_client__WEBPACK_IMPORTED_MODULE_3__);
+
 
 
 
@@ -558,7 +558,7 @@ let PostsComponent = class PostsComponent {
         this.gotoPageNum = '';
         this.posts = [];
         this.csvData = '';
-        this.changes = [];
+        this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_3__["connect"]('http://localhost:8080');
     }
     getData() {
         this.PostService.getAllPosts({ sortColumn: '#', sortDirection: 'asc' }).subscribe(posts => {
@@ -654,17 +654,10 @@ let PostsComponent = class PostsComponent {
     }
     ngOnInit() {
         this.getData();
-        /*const interval = setInterval(() => {
-          console.log('CHECK FOR DATA CHANGES!');
-          this.PostService.getDataChanges().subscribe(async res => {
-            this.changes = res;
-            const key = 'msg';
-            if (this.changes.length === 1 && this.changes[0][key] === '1') {
-              await clearInterval(interval);
-              window.location.reload(true);
-            }
-          });
-        }, 5000);*/
+        this.socket.on('DBChange', (msg) => {
+            console.log(msg.status);
+            this.getData();
+        });
     }
 };
 PostsComponent.ctorParameters = () => [
@@ -889,6 +882,17 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_2__["platformB
 
 module.exports = __webpack_require__(/*! C:\Users\I354995\Desktop\vt-coding-tasks\src\main.ts */"./src/main.ts");
 
+
+/***/ }),
+
+/***/ 1:
+/*!********************!*\
+  !*** ws (ignored) ***!
+  \********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/* (ignored) */
 
 /***/ })
 

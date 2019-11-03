@@ -407,7 +407,7 @@ if (content.locals) {
 
 /***/ }),
 
-/***/ 3:
+/***/ 4:
 /*!**********************************************************************************************************************************!*\
   !*** multi ./src/styles.css ./node_modules/bootstrap/dist/css/my-bootstrap.css ./node_modules/font-awesome/css/font-awesome.css ***!
   \**********************************************************************************************************************************/
@@ -421,5 +421,5 @@ module.exports = __webpack_require__(/*! C:\Users\I354995\Desktop\vt-coding-task
 
 /***/ })
 
-},[[3,"runtime"]]]);
+},[[4,"runtime"]]]);
 //# sourceMappingURL=styles-es2015.js.map

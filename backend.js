@@ -45,11 +45,20 @@ app.use("/routes", routes);
 app.get('*', (req, res)=>{
   res.redirect('http://localhost:8080');
 });
-app.listen(8080, (req, res)=>{
+
+// Socket IO
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
+server.listen(8080, (req, res)=>{
   console.log('Running on port 8080');
 });
+io.on('connection', (socket) => {
+  console.log('New connection!');
+  socket.on('disconnect', () => {
+    console.log('One disconnected!');
+  });
+});
 c.exec('start chrome http://localhost:8080');
-
 
 // file change type
 const ChangeType = ["New File Created", "Whole File Deleted", "File Updated"];
@@ -90,8 +99,8 @@ function recordInDB_file_created(file) {
         //console.log(file_content);
         file_content.forEach(function (file_content_i) {
             //console.log(file_content[i].length);
-            if(file_content_i != file_content[0] && file_content_i.length == file_content[0].length) {
-            //if (file_content_i != file_content[0] && file_content_i.length == file_content[0].length && file_content_i[0] != "-----------") {
+            //if(file_content_i != file_content[0] && file_content_i.length == file_content[0].length) {
+            if (file_content_i != file_content[0] && file_content_i.length == file_content[0].length && file_content_i[0] != "-----------") {
                 console.log("---------------RECORD FILE CONTENT IN DB---------------");
                 // DATA MODEL
                 const link = getModelTLink(file, file_content_i[6]);
@@ -456,3 +465,22 @@ if (!fs.existsSync('./' + FOLDER)) {
         });
     });
 }
+
+
+// Check for data changes
+MongoClient.connect(DB_CONN_STR, {useNewUrlParser: true, useUnifiedTopology: true}, function (err, db) {
+  if (err) throw err;
+  console.log("Database Connected! ---- TO GET DATA CHANGES");
+  var dbo = db.db("sap-cx");
+  var collection = dbo.collection("FileChanges");
+  // Define change stream
+  const changeStream = collection.watch();
+  // start listen to changes
+  changeStream.on("change", function (event) {
+    // console.log(JSON.stringify(event));
+    io.emit('DBChange', {status: 'Got MongoDB change!'});
+    //changeStream.close();
+    //-----------NO db.close();-------------
+  });
+});
+

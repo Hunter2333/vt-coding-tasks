@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {PostsService, DataSearchCriteria} from '../posts.service';
-import {map} from "rxjs/operators";
+import * as io from 'socket.io-client';
 
 @Component({
   selector: 'app-posts',
@@ -9,15 +9,16 @@ import {map} from "rxjs/operators";
 })
 export class PostsComponent implements OnInit {
 
+  socket;
   page = 1;
   inputNumPerPage = '';
   numPerPage = 3;
   gotoPageNum = '';
   posts: any = [];
   csvData = '';
-  changes: any = [];
 
   constructor(private  PostService: PostsService) {
+    this.socket = io.connect('http://localhost:8080');
   }
 
   getData() {
@@ -127,16 +128,9 @@ export class PostsComponent implements OnInit {
 
   ngOnInit() {
     this.getData();
-    /*const interval = setInterval(() => {
-      console.log('CHECK FOR DATA CHANGES!');
-      this.PostService.getDataChanges().subscribe(async res => {
-        this.changes = res;
-        const key = 'msg';
-        if (this.changes.length === 1 && this.changes[0][key] === '1') {
-          await clearInterval(interval);
-          window.location.reload(true);
-        }
-      });
-    }, 5000);*/
+    this.socket.on('DBChange', (msg) => {
+      console.log(msg.status);
+      this.getData();
+    });
   }
 }
