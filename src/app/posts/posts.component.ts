@@ -12,7 +12,7 @@ export class PostsComponent implements OnInit {
   socket;
   page = 1;
   inputNumPerPage = '';
-  numPerPage = 3;
+  numPerPage = 5;
   gotoPageNum = '';
   posts: any = [];
   csvData = '';
