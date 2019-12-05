@@ -11,7 +11,7 @@ router.get('/posts', (req, res) => {
   // Get initial data collection
   MongoClient.connect(DB_CONN_STR, {useNewUrlParser: true, useUnifiedTopology: true}, function (err, db) {
     if (err) {res.status(500).send(err);}
-    console.log("Database Connected! ---- TO GET ALL DATA AS JSON");
+    console.log("Database Connected! ---- TO GET ALL DATA AS JSON\n");
     var dbo = db.db("sap-cx");
     var collection = dbo.collection("FileChanges");
     collection.find({}).toArray(async function(err, result) {

@@ -50,12 +50,12 @@ app.get('*', (req, res) => {
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 server.listen(8080, (req, res) => {
-  console.log('Running on port 8080');
+  console.log(Date() + '\nRunning on port 8080\n');
 });
 io.on('connection', (socket) => {
-  console.log('New connection!');
+  console.log(Date() + '\nNew connection!\n');
   socket.on('disconnect', () => {
-    console.log('One disconnected!');
+    console.log(Date() + '\nOne disconnected!\n');
   });
 });
 c.exec('start chrome http://localhost:8080');
@@ -65,7 +65,7 @@ const ChangeType = ["New File Created", "Whole File Deleted", "File Updated"];
 const FileContent = ["", "ORIGINAL", "UPDATED"];
 
 function readFileToArr(fReadName, callback) {
-  console.log('checkout ' + fReadName);
+  console.log(Date() + '\ncheckout ' + fReadName + '\n');
   var fRead = fs.createReadStream(fReadName);
   var objReadline = readline.createInterface({
     input: fRead
@@ -124,7 +124,7 @@ function recordInDB_file_created(file) {
         };
         MongoClient.connect(DB_CONN_STR, {useNewUrlParser: true, useUnifiedTopology: true}, function (err, db) {
           if (err) throw err;
-          console.log("Database Connected! --- TO INSERT A WHOLE FILE LINE");
+          console.log(Date() + "\nDatabase Connected! --- TO INSERT A WHOLE FILE LINE\n");
           var dbo = db.db("sap-cx");
           var collection = dbo.collection("FileChanges");
           collection.insertOne(document, function (err, result) {
@@ -145,7 +145,7 @@ function recordInDB_file_deleted(file) {
   sendNotificationEmail(file, 1);
   MongoClient.connect(DB_CONN_STR, {useNewUrlParser: true, useUnifiedTopology: true}, function (err, db) {
     if (err) throw err;
-    console.log("Database Connected! ---- TO DELETE WHOLE FILE LINES");
+    console.log(Date() + "\nDatabase Connected! ---- TO DELETE WHOLE FILE LINES");
     var dbo = db.db("sap-cx");
     var collection = dbo.collection("FileChanges");
     collection.updateMany({ChangedFile: file}, {
@@ -155,7 +155,7 @@ function recordInDB_file_deleted(file) {
       }
     }, function (err, res) {
       if (err) throw err;
-      console.log(res.result.nModified + "Documents Updated.");
+      console.log(res.result.nModified + "Documents Updated.\n");
     });
     db.close();
   });
@@ -208,7 +208,7 @@ function recordInDB_file_modified(file, str) {
                     useUnifiedTopology: true
                   }, function (err, db) {
                     if (err) throw err;
-                    console.log("Database Connected! ---- TO DELETE A LINE IN FILE");
+                    console.log(Date() + "\nDatabase Connected! ---- TO DELETE A LINE IN FILE\n");
                     var dbo = db.db("sap-cx");
                     var collection = dbo.collection("FileChanges");
                     collection.updateOne(
@@ -236,7 +236,7 @@ function recordInDB_file_modified(file, str) {
                     useUnifiedTopology: true
                   }, function (err, db) {
                     if (err) throw err;
-                    console.log("Database Connected! ---- TO SEARCH FOR A FILE LINE IN DB");
+                    console.log(Date() + "\nDatabase Connected! ---- TO SEARCH FOR A FILE LINE IN DB\n");
                     var dbo = db.db("sap-cx");
                     var collection = dbo.collection("FileChanges");
                     collection.find(contentStr).toArray(function (err, res) {
@@ -250,7 +250,7 @@ function recordInDB_file_modified(file, str) {
                           useUnifiedTopology: true
                         }, function (err, db) {
                           if (err) throw err;
-                          console.log("Database Connected! ---- TO UPDATE A FILE LINE");
+                          console.log(Date() + "\nDatabase Connected! ---- TO UPDATE A FILE LINE\n");
                           var dbo = db.db("sap-cx");
                           var collection = dbo.collection("FileChanges");
                           collection.updateOne(
@@ -295,7 +295,7 @@ function recordInDB_file_modified(file, str) {
                           useUnifiedTopology: true
                         }, function (err, db) {
                           if (err) throw err;
-                          console.log("Database Connected! ---- TO INSERT A FILE LINE");
+                          console.log(Date() + "\nDatabase Connected! ---- TO INSERT A FILE LINE\n");
                           var dbo = db.db("sap-cx");
                           var collection = dbo.collection("FileChanges");
                           collection.insertOne(document, function (err, result) {
@@ -437,10 +437,10 @@ if (!fs.existsSync('./' + FOLDER)) {
   // Pull from https://github.tools.sap/COPS/modelt-az-report-repository every day at 7:30AM
   const pull_rule = '0 30 7 * * *';
   schedule.scheduleJob(pull_rule, function () {
-    console.log('Pull Schedule Rule is Running!');
+    console.log(Date() + '\nPull Schedule Rule is Running!');
     console.log('Local Copy is already existing!');
     git('./modelt-az-report-repository').diff(["origin/master"], function (err, status) {
-      console.log(status + "\n");
+      //console.log(status + "\n");
       checkDiff(status, function () {
         git('./modelt-az-report-repository').pull('origin', 'master', function (err, result) {
           if (err) throw err;
@@ -451,18 +451,18 @@ if (!fs.existsSync('./' + FOLDER)) {
   });
 
   // Start Git Diff Schedule Task
-  const diff_rule = new schedule.RecurrenceRule();
+  //const diff_rule = new schedule.RecurrenceRule();
   //diff_rule.minute = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
-  diff_rule.minute = [0, 10, 20, 30, 40, 50];
+  //diff_rule.minute = [0, 10, 20, 30, 40, 50];
   //diff_rule.minute = [0, 20, 40];
   //diff_rule.minute = [0, 30];
-  //const diff_rule = '30 * * * * *';
+  const diff_rule = '30 * * * * *';
   schedule.scheduleJob(diff_rule, function () {
     // run on xx:xx:30 every minute
     // run on xx:10 & xx:30 & xx:50 every hour
-    console.log('Diff Schedule Rule is Running!');
+    console.log(Date() + '\nDiff Schedule Rule is Running!');
     //git.listRemote([], console.log.bind(console));
-    console.log('Local Copy is already existing!');
+    console.log('Local Copy is already existing!\n');
     git('./modelt-az-report-repository').diff(["origin/master"], function (err, status) {
       //console.log(status + "\n");
       checkDiff(status, function () {
@@ -475,7 +475,7 @@ if (!fs.existsSync('./' + FOLDER)) {
 // Check for data changes
 MongoClient.connect(DB_CONN_STR, {useNewUrlParser: true, useUnifiedTopology: true}, function (err, db) {
   if (err) throw err;
-  console.log("Database Connected! ---- TO GET DATA CHANGES");
+  console.log("Database Connected! ---- TO GET DATA CHANGES\n");
   var dbo = db.db("sap-cx");
   var collection = dbo.collection("FileChanges");
   // Define change stream
@@ -483,6 +483,7 @@ MongoClient.connect(DB_CONN_STR, {useNewUrlParser: true, useUnifiedTopology: tru
   // start listen to changes
   changeStream.on("change", function (event) {
     // console.log(JSON.stringify(event));
+    console.log(Date() + "\nGot Database change(s)!\n");
     io.emit('DBChange', {status: 'Got MongoDB change!'});
     //changeStream.close();
     //-----------NO db.close();-------------
