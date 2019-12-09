@@ -13,9 +13,9 @@ router.get('/posts', (req, res) => {
     if (err) {res.status(500).send(err);}
     console.log("Database Connected! ---- TO GET ALL DATA AS JSON\n");
     var dbo = db.db("sap-cx");
-    var collection = dbo.collection("FileChanges");
+    var collection = dbo.collection("CCv2LongRunningDeployment");
     collection.find({}).toArray(async function(err, result) {
-      if (err) throw err;
+      if (err) console.log(err);
       //console.log(result);
       await res.status(200).json(result);
       db.close();

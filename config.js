@@ -1,15 +1,15 @@
-//TODO
 module.exports = {
     email: {
-        service: '163',
-        user: '15801790092@163.com',
-        pass: '9231024s',
+        host: 'smtp.163.com',
+        port: 465,
+        user: 'ccv2longdeploy@163.com',
+        pass: 'sapcxpsl2',
     },
 
     recipient: [
     { emailAddress: '1249881412@qq.com'},
     { emailAddress: 'xiaoqing.sun@sap.com' },
-    { emailAddress: 'tao.jiang02@sap.com' },
+    /*{ emailAddress: 'tao.jiang02@sap.com' },
     { emailAddress: 'carry.lin@sap.com' },
     { emailAddress: 'winston.zhou@sap.com' },
     { emailAddress: 'yuping.shi@sap.com' },
@@ -23,6 +23,6 @@ module.exports = {
     { emailAddress: 'david.jiang01@sap.com' },
     { emailAddress: 'john.jiang06@sap.com' },
     { emailAddress: 'wallace.zhao@sap.com' },
-    { emailAddress: 'gerard.liu@sap.com' },
+    { emailAddress: 'gerard.liu@sap.com' },*/
     ]
 }
