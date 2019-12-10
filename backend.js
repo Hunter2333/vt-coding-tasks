@@ -104,7 +104,7 @@ function recordInDB_file_created(file, str) {
   for (var i = 0; i < lines.length; i++) {
     (function (i) {
       if (lines[i].substring(0, 2) == "@@") {
-        updated_file_content = updated_file_content + "+" + lines[i+1].substring(1, lines[i+1].length) + "\n";
+        updated_file_content = updated_file_content + "+" + lines[i + 1].substring(1, lines[i + 1].length) + "\n";
         for (var k = i + 2; k < lines.length; k++) {
           (function (k) {
             //console.log("\n" + lines[k] + "\n");
@@ -222,8 +222,7 @@ function recordInDB_file_modified(file, str) {
           for (var k = i + 1; k < lines.length; k++) {
             (function (k) {
               //console.log("\n" + lines[k] + "\n");
-              if(lines[k][0] == "+" || lines[k][0] == "-")
-              {
+              if (lines[k][0] == "+" || lines[k][0] == "-") {
                 var line_content = lines[k].split(",");
                 if (line_content.length == 11 && line_content[3] != "------") {
                   var customer_id = line_content[0].substring(1, line_content[0].length);
@@ -380,10 +379,10 @@ function getFileChangeType(str) {
 function checkDiff(diffresult, callback) {
   var changedFilesDiffInfo = diffresult.split("diff --git a/");
   changedFilesDiffInfo.splice(0, 1);  // changedFilesDiffInfo[0] = ' '
-  console.log(changedFilesDiffInfo.length + "\n");
+  //console.log(changedFilesDiffInfo.length + "\n");
   for (var i = 0; i < changedFilesDiffInfo.length; i++) {
     var changedFileDir = changedFilesDiffInfo[i].split(".csv")[0] + ".csv";
-    if(changedFileDir.indexOf("hourly") != -1) {
+    if (changedFileDir.indexOf("hourly") != -1) {
       console.log("*********************************");
       console.log("There is change in hourly query file:");
       console.log("/" + changedFileDir);
@@ -410,7 +409,7 @@ function checkDiff(diffresult, callback) {
         recordInDB_file_modified(changedFileDir, changedFilesDiffInfo[i]);
       }
     }
-    }
+  }
   callback();
 }
 
@@ -448,20 +447,29 @@ schedule.scheduleJob(diff_rule, function () {
 
 
 // Check for data changes
-MongoClient.connect(DB_CONN_STR, {useNewUrlParser: true, useUnifiedTopology: true}, function (err, db) {
-  if (err) throw err;
-  console.log("Database Connected! ---- TO GET DATA CHANGES\n");
-  var dbo = db.db("sap-cx");
-  var collection = dbo.collection("CCv2LongRunningDeployment");
-  // Define change stream
-  const changeStream = collection.watch();
-  // start listen to changes
-  changeStream.on("change", function (event) {
-    // console.log(JSON.stringify(event));
-    console.log(Date() + "\nGot Database change(s)!\n");
-    io.emit('DBChange', {status: 'Got MongoDB change!'});
-    //changeStream.close();
-    //-----------NO db.close();-------------
+MongoClient.connect(DB_CONN_STR,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    auto_reconnect: true,
+    socketTimeoutMS: 360000,
+    keepAlive: 10000,
+    connectTimeoutMS: 360000
+  },
+  function (err, db) {
+    if (err) console.log(err);
+    console.log("Database Connected! ---- TO GET DATA CHANGES\n");
+    var dbo = db.db("sap-cx");
+    var collection = dbo.collection("CCv2LongRunningDeployment");
+    // Define change stream
+    const changeStream = collection.watch();
+    // start listen to changes
+    changeStream.on("change", function (event) {
+      // console.log(JSON.stringify(event));
+      console.log(Date() + "\nGot Database change(s)!\n");
+      io.emit('DBChange', {status: 'Got MongoDB change!'});
+      //changeStream.close();
+      //-----------NO db.close();-------------
+    });
   });
-});
 
