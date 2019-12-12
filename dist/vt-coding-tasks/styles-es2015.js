@@ -414,9 +414,9 @@ if (content.locals) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\I354995\Desktop\vt-coding-tasks\src\styles.css */"./src/styles.css");
-__webpack_require__(/*! C:\Users\I354995\Desktop\vt-coding-tasks\node_modules\bootstrap\dist\css\my-bootstrap.css */"./node_modules/bootstrap/dist/css/my-bootstrap.css");
-module.exports = __webpack_require__(/*! C:\Users\I354995\Desktop\vt-coding-tasks\node_modules\font-awesome\css\font-awesome.css */"./node_modules/font-awesome/css/font-awesome.css");
+__webpack_require__(/*! /home/I354995/Documents/vt-coding-tasks/src/styles.css */"./src/styles.css");
+__webpack_require__(/*! /home/I354995/Documents/vt-coding-tasks/node_modules/bootstrap/dist/css/my-bootstrap.css */"./node_modules/bootstrap/dist/css/my-bootstrap.css");
+module.exports = __webpack_require__(/*! /home/I354995/Documents/vt-coding-tasks/node_modules/font-awesome/css/font-awesome.css */"./node_modules/font-awesome/css/font-awesome.css");
 
 
 /***/ })
