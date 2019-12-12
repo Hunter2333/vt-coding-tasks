@@ -8,7 +8,7 @@ module.exports = {
 
     recipient: [
     { emailAddress: 'xiaoqing.sun@sap.com' },
-    { emailAddress: 'tao.jiang02@sap.com' },
+    /*{ emailAddress: 'tao.jiang02@sap.com' },
     { emailAddress: 'carry.lin@sap.com' },
     { emailAddress: 'winston.zhou@sap.com' },
     { emailAddress: 'yuping.shi@sap.com' },
@@ -22,6 +22,6 @@ module.exports = {
     { emailAddress: 'david.jiang01@sap.com' },
     { emailAddress: 'john.jiang06@sap.com' },
     { emailAddress: 'wallace.zhao@sap.com' },
-    { emailAddress: 'gerard.liu@sap.com' },
+    { emailAddress: 'gerard.liu@sap.com' },*/
     ]
 }

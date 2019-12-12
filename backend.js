@@ -376,7 +376,8 @@ function getFileChangeType(str) {
 }
 
 //For select-27.csv in ./hourly
-function checkDiff(diffresult, callback) {
+function checkDiff(diffresult) {
+  console.log("CHECKDIFF"+'\n');
   var changedFilesDiffInfo = diffresult.split("diff --git a/");
   changedFilesDiffInfo.splice(0, 1);  // changedFilesDiffInfo[0] = ' '
   //console.log(changedFilesDiffInfo.length + "\n");
@@ -410,7 +411,6 @@ function checkDiff(diffresult, callback) {
       }
     }
   }
-  callback();
 }
 
 
@@ -422,8 +422,8 @@ if (!fs.existsSync('./' + FOLDER)) {
 }
 // Start Git Fetch & Diff & Merge Schedule Task
 const diff_rule = new schedule.RecurrenceRule();
-//diff_rule.minute = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
-diff_rule.minute = [0, 10, 20, 30, 40, 50];
+diff_rule.minute = [0, 5, 10, 15, 20, 27, 30, 35, 40, 45, 50, 55];
+//diff_rule.minute = [0, 10, 20, 30, 40, 50];
 //diff_rule.minute = [0, 20, 40];
 //diff_rule.minute = [0, 30];
 //const diff_rule = '30 * * * * *';
@@ -434,14 +434,14 @@ schedule.scheduleJob(diff_rule, function () {
   //git.listRemote([], console.log.bind(console));
   console.log('Local Copy is already existing!\n');
   //git('./modelt-az-report-repository').fetch();
-  git('./modelt-az-report-repository').diff(["origin/master"], async function (err, status) {
+  git('./modelt-az-report-repository').diff(["origin/master"], function (err, status) {
     //console.log(status + "\n");
-    await checkDiff(status, function () {
-      git('./modelt-az-report-repository').pull('origin', 'master', function (err, result) {
+    checkDiff(status);
+    git('./modelt-az-report-repository').pull('origin', 'master', function (err, result) {
         if (err) console.log(err);
-        console.log(result + "\n");
+        console.log("GIT PULL" + '\n');
+        //console.log(result + "\n");
       });
-    });
   });
 });
 
