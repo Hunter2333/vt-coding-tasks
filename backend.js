@@ -433,7 +433,7 @@ schedule.scheduleJob(diff_rule, function () {
   console.log(Date() + '\nDiff Schedule Rule is Running!');
   //git.listRemote([], console.log.bind(console));
   console.log('Local Copy is already existing!\n');
-  git('./modelt-az-report-repository').fetch();
+  //git('./modelt-az-report-repository').fetch();
   git('./modelt-az-report-repository').diff(["origin/master"], async function (err, status) {
     //console.log(status + "\n");
     await checkDiff(status, function () {
