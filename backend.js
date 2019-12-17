@@ -380,23 +380,24 @@ function checkDiff(diffresult) {
   console.log("CHECKDIFF"+'\n');
   var changedFilesDiffInfo = diffresult.split("diff --git a/");
   changedFilesDiffInfo.splice(0, 1);  // changedFilesDiffInfo[0] = ' '
-  //console.log(changedFilesDiffInfo.length + "\n");
+  console.log("changedFilesDiffInfo.length: " + changedFilesDiffInfo.length + "\n");
   for (var i = 0; i < changedFilesDiffInfo.length; i++) {
-    var changedFileDir = changedFilesDiffInfo[i].split(".csv")[0] + ".csv";
+    (function (i) {
+      var changedFileDir = changedFilesDiffInfo[i].split(".csv")[0] + ".csv";
     if (changedFileDir.indexOf("hourly") != -1) {
       console.log("*********************************");
       console.log("There is change in hourly query file:");
       console.log("/" + changedFileDir);
       console.log("*********************************");
       var fileChangeType = getFileChangeType(changedFilesDiffInfo[i]);
-      // console.log(fileChangeType.size + "\n");
-      // if(fileChangeType.size > 0)
-      // {
-      //   fileChangeType.forEach(function (value, key, map) {
-      //     console.log("key: " + key + ", value: " + value);
-      //   });
-      //   console.log("\n");
-      // }
+      console.log("fileChangeType.size: " + fileChangeType.size + "\n");
+      if(fileChangeType.size > 0)
+      {
+        fileChangeType.forEach(function (value, key, map) {
+          console.log("key: " + key + ", value: " + value);
+        });
+        console.log("\n");
+      }
       // Whole File CREATED
       if (fileChangeType.has(-2)) {
         recordInDB_file_created(changedFileDir, changedFilesDiffInfo[i]);
@@ -410,6 +411,7 @@ function checkDiff(diffresult) {
         recordInDB_file_modified(changedFileDir, changedFilesDiffInfo[i]);
       }
     }
+    })(i);
   }
 }
 
@@ -436,12 +438,13 @@ schedule.scheduleJob(diff_rule, function () {
   //git('./modelt-az-report-repository').fetch();
   git('./modelt-az-report-repository').diff(["origin/master"], function (err, status) {
     //console.log(status + "\n");
+    if (err) console.log(err);
     checkDiff(status);
-    git('./modelt-az-report-repository').pull('origin', 'master', function (err, result) {
-        if (err) console.log(err);
-        console.log("GIT PULL" + '\n');
-        //console.log(result + "\n");
-      });
+  });
+  git('./modelt-az-report-repository').pull('origin', 'master', function (err, result) {
+    if (err) console.log(err);
+    console.log("GIT PULL" + '\n');
+    //console.log(result + "\n");
   });
 });
 
