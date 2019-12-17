@@ -423,7 +423,7 @@ if (!fs.existsSync('./' + FOLDER)) {
 }
 // Start Git Fetch & Diff & Merge Schedule Task
 const diff_rule = new schedule.RecurrenceRule();
-diff_rule.minute = [0, 5, 10, 15, 20, 27, 30, 35, 40, 45, 50, 55];
+diff_rule.minute = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
 //diff_rule.minute = [0, 10, 20, 30, 40, 50];
 //diff_rule.minute = [0, 20, 40];
 //diff_rule.minute = [0, 30];
@@ -439,12 +439,13 @@ schedule.scheduleJob(diff_rule, function () {
         //console.log(status + "\n");
         if (err) console.log(err);
         checkDiff(status);
+    }).exec(() => function () {
+        git('./modelt-az-report-repository').pull('origin', 'master', function (err, result) {
+            if (err) console.log(err);
+            console.log("GIT PULL" + '\n');
+            //console.log(result + "\n");
+        });
     });
-    // git('./modelt-az-report-repository').pull('origin', 'master', function (err, result) {
-    //     if (err) console.log(err);
-    //     console.log("GIT PULL" + '\n');
-    //     //console.log(result + "\n");
-    // });
 });
 
 
