@@ -381,37 +381,52 @@ function checkDiff(diffresult) {
     var changedFilesDiffInfo = diffresult.split("diff --git a/");
     changedFilesDiffInfo.splice(0, 1);  // changedFilesDiffInfo[0] = ' '
     console.log("changedFilesDiffInfo.length: " + changedFilesDiffInfo.length + "\n");
+    // use Promise to control order
+    var actions = [];
     for (var i = 0; i < changedFilesDiffInfo.length; i++) {
-        (function (i) {
-            var changedFileDir = changedFilesDiffInfo[i].split(".csv")[0] + ".csv";
-            if (changedFileDir.indexOf("hourly") != -1) {
-                console.log("*********************************");
-                console.log("There is change in hourly query file:");
-                console.log("/" + changedFileDir);
-                console.log("*********************************");
-                var fileChangeType = getFileChangeType(changedFilesDiffInfo[i]);
-                console.log("fileChangeType.size: " + fileChangeType.size + "\n");
-                if (fileChangeType.size > 0) {
-                    fileChangeType.forEach(function (value, key, map) {
-                        console.log("key: " + key + ", value: " + value);
-                    });
-                    console.log("\n");
-                }
-                // Whole File CREATED
-                if (fileChangeType.has(-2)) {
-                    recordInDB_file_created(changedFileDir, changedFilesDiffInfo[i]);
-                }
-                // Whole File DELETED
-                if (fileChangeType.has(-1)) {
-                    recordInDB_file_deleted(changedFileDir);
-                }
-                // File MODIFIED
-                if (fileChangeType.has(0)) {
-                    recordInDB_file_modified(changedFileDir, changedFilesDiffInfo[i]);
-                }
-            }
-        })(i);
+        var action = () => {
+            return new Promise(resolve => {
+                (() => {
+                    var changedFileDir = changedFilesDiffInfo[i].split(".csv")[0] + ".csv";
+                    if (changedFileDir.indexOf("hourly") != -1) {
+                        console.log("*********************************");
+                        console.log("There is change in hourly query file:");
+                        console.log("/" + changedFileDir);
+                        console.log("*********************************");
+                        var fileChangeType = getFileChangeType(changedFilesDiffInfo[i]);
+                        console.log("fileChangeType.size: " + fileChangeType.size + "\n");
+                        if (fileChangeType.size > 0) {
+                            fileChangeType.forEach(function (value, key, map) {
+                                console.log("key: " + key + ", value: " + value);
+                            });
+                            console.log("\n");
+                        }
+                        // Whole File CREATED
+                        if (fileChangeType.has(-2)) {
+                            recordInDB_file_created(changedFileDir, changedFilesDiffInfo[i]);
+                        }
+                        // Whole File DELETED
+                        if (fileChangeType.has(-1)) {
+                            recordInDB_file_deleted(changedFileDir);
+                        }
+                        // File MODIFIED
+                        if (fileChangeType.has(0)) {
+                            recordInDB_file_modified(changedFileDir, changedFilesDiffInfo[i]);
+                        }
+                    }
+                    resolve();
+                })(i);
+            })
+        }
+        actions.push(action());
     }
+    Promise.all(actions).then(() => {
+        git('./modelt-az-report-repository').pull('origin', 'master', function (err, result) {
+            if (err) console.log(err);
+            console.log("GIT PULL" + '\n');
+            //console.log(result + "\n");
+        });
+    });
 }
 
 
@@ -439,12 +454,6 @@ schedule.scheduleJob(diff_rule, function () {
         //console.log(status + "\n");
         if (err) console.log(err);
         checkDiff(status);
-    }).exec(() => function () {
-        git('./modelt-az-report-repository').pull('origin', 'master', function (err, result) {
-            if (err) console.log(err);
-            console.log("GIT PULL" + '\n');
-            //console.log(result + "\n");
-        });
     });
 });
 
