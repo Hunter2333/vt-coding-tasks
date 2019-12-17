@@ -377,50 +377,49 @@ function getFileChangeType(str) {
 
 //For select-27.csv in ./hourly
 function checkDiff(diffresult) {
-  console.log("CHECKDIFF"+'\n');
-  var changedFilesDiffInfo = diffresult.split("diff --git a/");
-  changedFilesDiffInfo.splice(0, 1);  // changedFilesDiffInfo[0] = ' '
-  console.log("changedFilesDiffInfo.length: " + changedFilesDiffInfo.length + "\n");
-  for (var i = 0; i < changedFilesDiffInfo.length; i++) {
-    (function (i) {
-      var changedFileDir = changedFilesDiffInfo[i].split(".csv")[0] + ".csv";
-    if (changedFileDir.indexOf("hourly") != -1) {
-      console.log("*********************************");
-      console.log("There is change in hourly query file:");
-      console.log("/" + changedFileDir);
-      console.log("*********************************");
-      var fileChangeType = getFileChangeType(changedFilesDiffInfo[i]);
-      console.log("fileChangeType.size: " + fileChangeType.size + "\n");
-      if(fileChangeType.size > 0)
-      {
-        fileChangeType.forEach(function (value, key, map) {
-          console.log("key: " + key + ", value: " + value);
-        });
-        console.log("\n");
-      }
-      // Whole File CREATED
-      if (fileChangeType.has(-2)) {
-        recordInDB_file_created(changedFileDir, changedFilesDiffInfo[i]);
-      }
-      // Whole File DELETED
-      if (fileChangeType.has(-1)) {
-        recordInDB_file_deleted(changedFileDir);
-      }
-      // File MODIFIED
-      if (fileChangeType.has(0)) {
-        recordInDB_file_modified(changedFileDir, changedFilesDiffInfo[i]);
-      }
+    console.log("CHECKDIFF" + '\n');
+    var changedFilesDiffInfo = diffresult.split("diff --git a/");
+    changedFilesDiffInfo.splice(0, 1);  // changedFilesDiffInfo[0] = ' '
+    console.log("changedFilesDiffInfo.length: " + changedFilesDiffInfo.length + "\n");
+    for (var i = 0; i < changedFilesDiffInfo.length; i++) {
+        (function (i) {
+            var changedFileDir = changedFilesDiffInfo[i].split(".csv")[0] + ".csv";
+            if (changedFileDir.indexOf("hourly") != -1) {
+                console.log("*********************************");
+                console.log("There is change in hourly query file:");
+                console.log("/" + changedFileDir);
+                console.log("*********************************");
+                var fileChangeType = getFileChangeType(changedFilesDiffInfo[i]);
+                console.log("fileChangeType.size: " + fileChangeType.size + "\n");
+                if (fileChangeType.size > 0) {
+                    fileChangeType.forEach(function (value, key, map) {
+                        console.log("key: " + key + ", value: " + value);
+                    });
+                    console.log("\n");
+                }
+                // Whole File CREATED
+                if (fileChangeType.has(-2)) {
+                    recordInDB_file_created(changedFileDir, changedFilesDiffInfo[i]);
+                }
+                // Whole File DELETED
+                if (fileChangeType.has(-1)) {
+                    recordInDB_file_deleted(changedFileDir);
+                }
+                // File MODIFIED
+                if (fileChangeType.has(0)) {
+                    recordInDB_file_modified(changedFileDir, changedFilesDiffInfo[i]);
+                }
+            }
+        })(i);
     }
-    })(i);
-  }
 }
 
 
 // ----------------- MAIN ------------------
 if (!fs.existsSync('./' + FOLDER)) {
-  git().clone(remote)
-    .exec(() => console.log('finished'));
-  //.catch((err) => console.error('failed: ', err));
+    git().clone(remote)
+        .exec(() => console.log('finished'));
+    //.catch((err) => console.error('failed: ', err));
 }
 // Start Git Fetch & Diff & Merge Schedule Task
 const diff_rule = new schedule.RecurrenceRule();
@@ -430,22 +429,22 @@ diff_rule.minute = [0, 5, 10, 15, 20, 27, 30, 35, 40, 45, 50, 55];
 //diff_rule.minute = [0, 30];
 //const diff_rule = '30 * * * * *';
 schedule.scheduleJob(diff_rule, function () {
-  // run on xx:xx:30 every minute
-  // run on xx:10 & xx:30 & xx:50 every hour
-  console.log(Date() + '\nDiff Schedule Rule is Running!');
-  //git.listRemote([], console.log.bind(console));
-  console.log('Local Copy is already existing!\n');
-  //git('./modelt-az-report-repository').fetch();
-  git('./modelt-az-report-repository').diff(["origin/master"], function (err, status) {
-    //console.log(status + "\n");
-    if (err) console.log(err);
-    checkDiff(status);
-  });
-  git('./modelt-az-report-repository').pull('origin', 'master', function (err, result) {
-    if (err) console.log(err);
-    console.log("GIT PULL" + '\n');
-    //console.log(result + "\n");
-  });
+    // run on xx:xx:30 every minute
+    // run on xx:10 & xx:30 & xx:50 every hour
+    console.log(Date() + '\nDiff Schedule Rule is Running!');
+    //git.listRemote([], console.log.bind(console));
+    console.log('Local Copy is already existing!\n');
+    //git('./modelt-az-report-repository').fetch();
+    git('./modelt-az-report-repository').diff(["origin/master"], function (err, status) {
+        //console.log(status + "\n");
+        if (err) console.log(err);
+        checkDiff(status);
+    });
+    // git('./modelt-az-report-repository').pull('origin', 'master', function (err, result) {
+    //     if (err) console.log(err);
+    //     console.log("GIT PULL" + '\n');
+    //     //console.log(result + "\n");
+    // });
 });
 
 
