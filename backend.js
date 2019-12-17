@@ -446,9 +446,10 @@ diff_rule.minute = [0, 10, 20, 30, 40, 50];
 schedule.scheduleJob(diff_rule, function () {
     // run on xx:xx:30 every minute
     // run on xx:10 & xx:30 & xx:50 every hour
-    console.log(Date() + '\nDiff Schedule Rule is Running!');
+    console.log("----------------------------------------------------------------------");
+    console.log(Date() + "\nDiff Schedule Rule is Running!");
     //git.listRemote([], console.log.bind(console));
-    console.log('Local Copy is already existing!\n');
+    console.log("Local Copy is already existing!\n");
     //git('./modelt-az-report-repository').fetch();
     git('./modelt-az-report-repository').diff(["origin/master"], function (err, status) {
         //console.log(status + "\n");
