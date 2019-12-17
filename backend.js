@@ -438,8 +438,8 @@ if (!fs.existsSync('./' + FOLDER)) {
 }
 // Start Git Fetch & Diff & Merge Schedule Task
 const diff_rule = new schedule.RecurrenceRule();
-diff_rule.minute = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
-//diff_rule.minute = [0, 10, 20, 30, 40, 50];
+//diff_rule.minute = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+diff_rule.minute = [0, 10, 20, 30, 40, 50];
 //diff_rule.minute = [0, 20, 40];
 //diff_rule.minute = [0, 30];
 //const diff_rule = '30 * * * * *';
