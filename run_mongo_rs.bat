@@ -1,0 +1,1 @@
+mongod --port 27017 --dbpath C:\Users\I354995\Downloads\Compressed\mongoDBdata --replSet rs0 --bind_ip localhost
